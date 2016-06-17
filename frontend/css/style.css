@@ -12,3 +12,21 @@ footer.page-footer {
 .parallax-container .section {
   width: 100%;
 }
+
+
+.lblue-text {
+  color: rgb(117, 196, 255);
+}
+
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #8cb1d9;
+  box-shadow: 0 1px 0 0 #8cb1d9;
+}
+
+.input-field input {
+  color: #000;
+}
+
+.white-shadow {
+  text-shadow: 1.7px 1.7px 1.7px #FFF;
+}

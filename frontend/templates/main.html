@@ -2,15 +2,19 @@
 <div class="parallax-container">
   <div class="section" id="index-banner">
     <div class="container">
-      <h1 class="header center white-text">Portal eduCOLTEC</h1>
       <div class="row center">
-        <h5 class="header col s12 light">O portal educativo do COLTEC!!</h5>
+        <h5 class="header col s12 white-shadow" style="margin-top:15%; color: black">Procurando por uma oportunidade?</h5>
       </div>
-      <div class="row center">
-        <a href="#/novoVideo" class="btn-large waves-effect waves-light indigo darken-3">Novo Vídeo</a>
+      <div class="row center white z-depth-3" style="margin-bottom:20%;">
+        <div class="input-field col s9" style="margin-left:3.3%">
+          <input placeholder="Busque aqui" id="search" type="text">
+        </div>
+        <div class="btn-large blue lighten-2 col s2" style="margin-top: 1.2%; margin-left: 1.7%">
+          Buscar
+        </div>
       </div>
     </div>
-    <div class="parallax"><img src="public/images/coltec.png" alt="Unsplashed background img 1"></div>
+    <div class="parallax main"><img src="/frontend/public/images/city.jpg" alt=""/></div>
   </div>
 </div>
 <!-- Fim Banner principal -->
@@ -22,28 +26,28 @@
     <div class="row center light">
       <div class="col m4 s12">
         <div class="icon-block">
-          <h2 class="center indigo-text"><i class="material-icons medium">video_label</i></h2>
-          <h5>Assista</h5>
+          <h2 class="center blue-text"><i class="material-icons medium">thumb_up</i></h2>
+          <h5>Encontre</h5>
           <p class="light">
-            Aprenda quando e onde quiser assistindo um dos {{videosCtrl.videos.length}} vídeos disponibilizados no portal!!
+            Procure vagas disponíveis de acordo com suas áreas de interesse
           </p>
         </div>
       </div>
       <div class="col m4 s12">
         <div class="icon-block">
-          <h2 class="center indigo-text"><i class="material-icons medium">star</i></h2>
-          <h5>Avalie e Compartilhe</h5>
+          <h2 class="center blue-text"><i class="material-icons medium">language</i></h2>
+          <h5>Mantenha-se Atualizado</h5>
           <p class="light">
-            Gostou do vídeo? Avalie e compartilhe com seus amigos!!
+            Registre seu email para receber informações sobre novas vagas em suas áreas de interesse
           </p>
         </div>
       </div>
       <div class="col m4 s12">
         <div class="icon-block">
-          <h2 class="center indigo-text"><i class="material-icons medium">add_to_queue</i></h2>
-          <h5>Adicione novos vídeos</h5>
+          <h2 class="center blue-text"><i class="material-icons medium">star</i></h2>
+          <h5>Seja Contratado</h5>
           <p class="light">
-            Deseja adicionar um novo vídeo que viu na web? Deseja disponibilizar um vídeo seu? Basta cadastrá-lo no portal!!
+            Compartilhe seu Curriculum para que empresas possam te contatar
           </p>
         </div>
       </div>
@@ -52,168 +56,6 @@
 </div>
 <!-- Fim da seção step-to-step -->
 
-<!-- Lista dos vídeos -->
-<div class="indigo darken-3">
-  <div class="container">
-    <div class="section">
-      <div class="row">
-        <div class="s12">
-
-          <h3 class="white-text center">Vídeos Disponíveis Atualmente</h3>
-
-          <div class="row">
-
-            <style media="screen">
-              @media screen and (max-width: 992px) {
-                #bigs{
-                  display: none;
-                }
-                #cell{
-                }
-              }
-              @media screen and (min-width: 993px) {
-                #bigs{
-                }
-                #cell{
-                    display: none;
-                }
-              }
-            </style>
-            <!--Menu para seleção de curso em telas grandes-->
-            <div class="col l12 center" id="bigs">
-
-              <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(1)">Patola</a>
-              <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(2)">Automação</a>
-              <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(3)">Eletras</a>
-              <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(4)">Info</a>
-              <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(5)"></i>Química</a>
-
-            </div>
-            <!-- Menu para seleção de curso em telas pequenas -->
-            <div class="col s12 center" id="cell">
-
-              <div class="col s4 m4">
-                <a class="waves-effect waves-light indigo darken-1 btn-large" ng-click="defcurso(1)" style="width:100%; margin-top:5%">Patola</a>
-              </div>
-              <div class="col s4 m4">
-                <a class="waves-effect waves-light indigo darken-1 btn-large" style="width:100%; margin-top:5%" ng-click="defcurso(2)">Automação</a>
-              </div>
-              <div class="col s4 m4">
-                <a class="waves-effect waves-light indigo darken-1 btn-large" style="width:100%; margin-top:5%" ng-click="defcurso(3)">Eletras</a>
-              </div>
-              <div class="col s6 m6">
-                <a class="waves-effect waves-light indigo darken-1 btn-large" style="width:100%; margin-top:5%" ng-click="defcurso(4)">Info</a>
-              </div>
-              <div class="col s6 m6">
-                <a class="waves-effect waves-light indigo darken-1 btn-large" style="width:100%; margin-top:5%" ng-click="defcurso(5)"></i>Química</a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="blue-grey lighten-5">
-  <div class="container">
-    <div class="section">
-      <div class="row"> <!-- Nome do curso dos vídeos que estão sendo exibidos -->
-        <h2 class="center">
-                <span ng-if="curso.id == 1">
-                  <i class="material-icons medium">supervisor_account</i>
-                </span>
-                <span ng-if="curso.id == 2">
-                  <i class="material-icons medium">polymer</i>
-                </span>
-                <span ng-if="curso.id == 3">
-                  <i class="material-icons medium">settings_input_composite</i>
-                </span>
-                <span ng-if="curso.id == 4">
-                  <i class="material-icons medium">settings_ethernet</i>
-                </span>
-                <span ng-if="curso.id == 5">
-                  <i class="material-icons medium">invert_colors</i>
-                </span>
-                  {{curso.nome}}
-        </h2>
-      </div>
-      <div class="row no-pad-bot">
-        <div ng-if="curso != null"> <!--If que faz com que só os videos de determinado curso sejam exibidos -->
-          <div class="col l4 m6 s12" ng-repeat="video in videosCtrl.videos">
-          <div ng-if="curso.id == video.curso.id"> <!--If que define qual curso será definido -->
-            <div class="card hoverable medium">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" ng-src="{{video.urlImagem}}">
-            </div>
-            <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">{{video.disciplina}}<i class="material-icons right">more_vert</i></span><br>
-              <b>{{video.titulo}}</b><br>
-            </div>
-            <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4">Resumo<i class="material-icons right">close</i></span>
-              <p>{{video.resumo}}</p>
-            </div>
-            <div class="card-action indigo lighten-5">
-              <a href="#video-{{video.id}}" class="indigo-text modal-trigger" materialmodal>Vídeo</a>
-              <a href="#comment-{{video.id}}" class="indigo-text modal-trigger" materialmodal>Comentários</a>
-              <a class="right" href="" ng-click="share(video)"><img src="http://i.stack.imgur.com/br4Br.png" height="21" width="58"/></a><!-- Botão de compartilhar -->
-            </div>
-          </div>
-        </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modais para exibição dos vídeos e comentários -->
-  <div ng-repeat="video in videosCtrl.videos">
-    <div ng-if="curso.id == video.curso.id">
-
-      <div id="video-{{video.id}}" class="modal">
-        <div class="modal-content" style="padding:0;">
-          <div class="video-container">
-            <iframe width="800" height="500" src="{{getVideoUrl(video)}}" frameborder="0"></iframe>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a class=" modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
-          <a href="#comment-{{video.id}}" class="modal-action modal-close waves-effect waves-green btn-flat" materialmodal>Comentários</a>
-        </div>
-      </div>
-
-      <div id="comment-{{video.id}}" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4>Comentários</h4>
-          <div class="row" ng-repeat="comentario in video.comentarios">
-            <div class="col s12">
-              <b>Nota: </b> <i class="material-icons tiny" ng-repeat="n in [] | range:comentario.nota">grade</i>
-            </div>
-            <div class="col s12">
-              <b>Comentário</b>
-              <p>
-                {{comentario.comentario}}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <a class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
-          <a href="#/novoComentario/{{video.id}}" class="modal-action modal-close waves-effect waves-green btn-flat">Novo</a>
-          <a href="#video-{{video.id}}" class="modal-action modal-close waves-effect waves-green btn-flat" materialmodal>Vídeo</a>
-        </div>
-      </div>
-
-    </div>
-
-
-  </div>
-  <!-- Fim das modais de vídeo e comentários -->
-
-</div>
-<!-- Fim da lista dos Vídeos -->
 
 
 

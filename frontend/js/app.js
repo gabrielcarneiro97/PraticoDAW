@@ -1,4 +1,4 @@
-var app = angular.module('eduCOLTEC', ['ngRoute']);
+var app = angular.module('jobFinder', ['ngRoute']);
 
 var hostAddress = '/backend/src/public/';
 
