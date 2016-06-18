@@ -3,7 +3,7 @@
   <div class="section" id="index-banner">
     <div class="container">
       <div class="row center">
-        <h5 class="header col s12 white-shadow" style="margin-top:15%; color: black">Procurando por uma oportunidade?</h5>
+        <h4 class="header col s12 white-shadow" style="margin-top:15%; color: #ff751a">Procurando por uma oportunidade?</h4>
       </div>
       <div class="row center white z-depth-3" style="margin-bottom:20%;">
         <div class="input-field col s9" style="margin-left:3.3%">
@@ -21,39 +21,63 @@
 
 
 <!-- Seção step-to-step -->
+
 <div class="container">
   <div class="section">
-    <div class="row center light">
-      <div class="col m4 s12">
+    <div class="row center">
+      <div class="col s12">
         <div class="icon-block">
-          <h2 class="center blue-text"><i class="material-icons medium">thumb_up</i></h2>
-          <h5>Encontre</h5>
+          <h2 class="center blue-text"><i class="material-icons large">question_answer</i></h2>
+          <h4 class="light">Como funciona?</h4>
           <p class="light">
-            Procure vagas disponíveis de acordo com suas áreas de interesse
+            O <span class="lblue-text">Job<span class="grey-text">Finder</span></span> funciona de uma maneira muito simples, empresas cadastram as vagas que gostariam de preencher no sistema para que possiveis empregados possam as encontrar e enviar seus currículos, mas não se restringindo a isso, pessoas que estejam dísponiveis no mercado também podem colocar seus currículos de forma pública para que as empresas possam encontrar funcionarios que se adequem com o perfil do seu quadro de pessoal.
           </p>
         </div>
       </div>
-      <div class="col m4 s12">
-        <div class="icon-block">
-          <h2 class="center blue-text"><i class="material-icons medium">language</i></h2>
-          <h5>Mantenha-se Atualizado</h5>
-          <p class="light">
-            Registre seu email para receber informações sobre novas vagas em suas áreas de interesse
-          </p>
+    </div>
+
+
+
+  </div>
+</div>
+
+<div class="parallax-container">
+  <div class="section blue-grey lighten-5">
+    <div class="container">
+      <div class="row center light">
+        <div class="col m4 s12">
+          <div class="icon-block">
+            <h2 class="center blue-text"><i class="material-icons medium">thumb_up</i></h2>
+            <h5 style="color:black">Encontre</h5>
+            <p style="color:black">
+              Procure vagas disponíveis de acordo com suas áreas de interesse
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="col m4 s12">
-        <div class="icon-block">
-          <h2 class="center blue-text"><i class="material-icons medium">star</i></h2>
-          <h5>Seja Contratado</h5>
-          <p class="light">
-            Compartilhe seu Curriculum para que empresas possam te contatar
-          </p>
+        <div class="col m4 s12">
+          <div class="icon-block">
+            <h2 class="center blue-text"><i class="material-icons medium">language</i></h2>
+            <h5 style="color:black">Mantenha-se Atualizado</h5>
+            <p style="color:black">
+              Registre seu email para receber informações sobre novas vagas em suas áreas de interesse
+            </p>
+          </div>
+        </div>
+        <div class="col m4 s12">
+          <div class="icon-block">
+            <h2 class="center blue-text"><i class="material-icons medium">star</i></h2>
+            <h5 style="color:black">Seja Contratado</h5>
+            <p style="color:black">
+              Compartilhe seu Curriculum para que empresas possam te contatar
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 <!-- Fim da seção step-to-step -->
 
 
@@ -64,6 +88,7 @@
   $(function(){
     $('.parallax').parallax();
     $('.modal-trigger').leanModal();
+    $(".dropdown-button").dropdown();
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 </script>
