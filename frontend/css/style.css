@@ -22,6 +22,11 @@ footer.page-footer {
   box-shadow: 0 1px 0 0 #8cb1d9;
 }
 
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #8cb1d9;
+  box-shadow: 0 1px 0 0 #8cb1d9;
+}
+
 .input-field input {
   color: #000;
 }

@@ -29,6 +29,13 @@ $routeProvider.when('/',
         controllerAs: "comentariosCtrl"
       }
     )
+    .when('/login',
+      {
+        templateUrl: 'templates/login.html',
+        controller: "LoginController",
+        controllerAs: "loginCtrl"
+      }
+    )
     .otherwise({redirectTo: '/'});
 }]);
 
@@ -210,6 +217,15 @@ app.controller('VideosController', ['$sce', '$scope', '$location', 'Service', fu
 }]);
 
 
+/**
+ * Controller para manipulação dos login
+ *
+ * @param service serviço de manipulação dos login
+ * @param $scope escopo do controller
+ */
+app.controller('LoginController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
+
+}]);
 
 /**
  * Controller para manipulação dos comentários
