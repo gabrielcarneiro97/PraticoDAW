@@ -22,18 +22,18 @@ $routeProvider.when('/',
         controllerAs: "videosCtrl"
       }
     )
-    .when('/novoComentario/:videoId',
-      {
-        templateUrl: 'templates/newComment.html',
-        controller: "ComentariosController",
-        controllerAs: "comentariosCtrl"
-      }
-    )
     .when('/login',
       {
         templateUrl: 'templates/login.html',
         controller: "LoginController",
         controllerAs: "loginCtrl"
+      }
+    )
+    .when('/register',
+      {
+        templateUrl: 'templates/register.html',
+        controller: "RegisterController",
+        controllerAs: "registerCtrl"
       }
     )
     .otherwise({redirectTo: '/'});
@@ -228,35 +228,11 @@ app.controller('LoginController', ['$sce', '$scope', '$location', 'Service', fun
 }]);
 
 /**
- * Controller para manipulação dos comentários
+ * Controller para manipulação dos login
  *
- * @param service serviço de manipulação dos vídeos
+ * @param service serviço de manipulação dos login
+ * @param $scope escopo do controller
  */
-app.controller('ComentariosController', ['$scope', 'Service', '$routeParams', '$location', function($scope, service, $routeParams, $location) {
-  var self = this;
-  self.video = [];
-  $scope.coment = {};
-
-  // recupera um vídeo específico com base no ID da url
-  service.get(hostAddress + 'videos/' + $routeParams.videoId, function(answer) {
-    self.video = answer;
-  });
-
-  /**
-   *  Função para cadastro de novo comentario
-   * @param coment novo comentario a ser registrado
-   */
-  $scope.newComment = function(coment) {
-    coment.videoId = $routeParams.videoId;
-    if(coment.nota == null || coment.comentario == null)//Confere se todos os campos foram preenchidos
-      Materialize.toast('Preencha todos os campos!', 3000, 'rounded'); //alerta de erro
-    else
-    service.post(hostAddress + 'comentarios', coment, function(answer) {
-      if(answer.id !== null){
-        Materialize.toast('Comentario registrado com sucesso', 3000, 'rounded'); //popup avisando que o comentario foi registrado
-          $location.path('/');
-      }
-    });
-  }
+app.controller('RegisterController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
 
 }]);
