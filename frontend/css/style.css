@@ -12,6 +12,10 @@ footer.page-footer {
   width: 100%;
 }
 
+.lblue {
+  background-color: rgb(117, 196, 255) !important;
+}
+
 
 .lblue-text {
   color: rgb(117, 196, 255);
