@@ -1,0 +1,35 @@
+<div class="cointainer">
+  <h3 class="center">Vagas</h3>
+  <div class="row center">
+    <ul class="collapsible popout col s10 offset-s1" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header">First</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    </li>
+    <li>
+      <div class="collapsible-header">Second</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    </li>
+    <li>
+      <div class="collapsible-header">Third</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    </li>
+  </ul>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+(function($){
+  $(function(){
+    $('.parallax').parallax();
+    $('.modal-trigger').leanModal();
+    $(".dropdown-button").dropdown();
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  }); // end of document ready
+})(jQuery); // end of jQuery name space
+</script>

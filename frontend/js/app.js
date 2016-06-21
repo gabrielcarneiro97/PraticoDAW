@@ -43,6 +43,20 @@ $routeProvider.when('/',
         controllerAs: "empresaCtrl"
       }
     )
+    .when('/perfil',
+      {
+        templateUrl: 'templates/perfil.html',
+        controller: "PerfilController",
+        controllerAs: "perfilCtrl"
+      }
+    )
+    .when('/busca',
+      {
+        templateUrl: 'templates/busca.html',
+        controller: "BuscaController",
+        controllerAs: "buscaCtrl"
+      }
+    )
     .otherwise({redirectTo: '/'});
 }]);
 
@@ -251,5 +265,26 @@ app.controller('RegisterController', ['$sce', '$scope', '$location', 'Service', 
  * @param $scope escopo do controller
  */
 app.controller('EmpresaController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
+
+}]);
+
+
+/**
+ * Controller para manipulação da tela de perfil
+ *
+ * @param service serviço de manipulação da tela de perfil
+ * @param $scope escopo do controller
+ */
+app.controller('PerfilController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
+
+}]);
+
+/**
+ * Controller para manipulação da tela de busca
+ *
+ * @param service serviço de manipulação da tela de busca
+ * @param $scope escopo do controller
+ */
+app.controller('BuscaController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
 
 }]);
