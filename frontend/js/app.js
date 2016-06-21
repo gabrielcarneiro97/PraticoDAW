@@ -36,6 +36,13 @@ $routeProvider.when('/',
         controllerAs: "registerCtrl"
       }
     )
+    .when('/empresa',
+      {
+        templateUrl: 'templates/empresa.html',
+        controller: "EmpresaController",
+        controllerAs: "empresaCtrl"
+      }
+    )
     .otherwise({redirectTo: '/'});
 }]);
 
@@ -218,9 +225,9 @@ app.controller('VideosController', ['$sce', '$scope', '$location', 'Service', fu
 
 
 /**
- * Controller para manipulação dos login
+ * Controller para manipulação da tela de login
  *
- * @param service serviço de manipulação dos login
+ * @param service serviço de manipulação da tela de login
  * @param $scope escopo do controller
  */
 app.controller('LoginController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
@@ -228,11 +235,21 @@ app.controller('LoginController', ['$sce', '$scope', '$location', 'Service', fun
 }]);
 
 /**
- * Controller para manipulação dos login
+ * Controller para manipulação da tela de registro
  *
- * @param service serviço de manipulação dos login
+ * @param service serviço de manipulação da tela de registro
  * @param $scope escopo do controller
  */
 app.controller('RegisterController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
+
+}]);
+
+/**
+ * Controller para manipulação da tela das empresas
+ *
+ * @param service serviço de manipulação da tela das empresas
+ * @param $scope escopo do controller
+ */
+app.controller('EmpresaController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
 
 }]);

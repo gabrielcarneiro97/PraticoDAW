@@ -33,3 +33,7 @@ footer.page-footer {
 .white-shadow {
   text-shadow: 1.7px 1.7px 1.7px #FFF;
 }
+
+.black-shadow {
+  text-shadow: 1.7px 1.7px 1.7px #000;
+}

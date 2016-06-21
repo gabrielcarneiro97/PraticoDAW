@@ -1,8 +1,8 @@
 <div class="parallax-container">
-  <div class="section blue-grey lighten-4" id="index-banner">
+  <div class="section" id="index-banner">
     <div class="container">
       <div class="row center">
-        <h5 class="header col s12" style="margin-top:15%; color: #ff751a">Registrar</h5>
+        <h5 class="header col s12 black-shadow" style="margin-top:15%; margin-bottom:-1%; color: white">Registrar</h5>
       </div>
       <div class="row center">
         <div class="white z-depth-3 col s12 m10 offset-m1" style="margin-bottom:20%;">
@@ -33,9 +33,18 @@
           </div>
         </div>
       </div>
-
     </div>
-    <div class="parallax main"><img src="/frontend/public/images/city.jpg" alt=""/></div>
-
+    <div class="parallax"><img src="/frontend/public/images/cityNoLights.jpg" alt=""/></div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+(function($){
+  $(function(){
+    $('.parallax').parallax();
+    $('.modal-trigger').leanModal();
+    $(".dropdown-button").dropdown();
+  }); // end of document ready
+})(jQuery); // end of jQuery name space
+</script>
