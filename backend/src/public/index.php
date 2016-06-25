@@ -5,48 +5,45 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../vendor/autoload.php';
 
 // Carregamento dos arquivos fonte do projeto
-spl_autoload_register(function ($classname) {
+spl_autoload_register(function ($classname){
     require ("../classes/" . $classname . ".php");
 });
 
 $app = new \Slim\App;
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PUT");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-//session_start();
-//session_regenerate_id(true);
 
 /**
  * ---------------------------------------------------------------------------
- * ------------------------- ROTAS PARA CURSOS -------------------------
+ * ------------------------- ROTA PARA FUNCIONARIOS --------------------------
  * ---------------------------------------------------------------------------
  */
 
  /**
-  * Rota para recuperar todos os cursos
+  * Rota para recuperar todos os funcionários
   */
-$app->get('/cursos', function (Request $request, Response $response) {
-  $cursoDAO = CursoDAO::getInstance();
-  $cursos = array_values($cursoDAO->getAll());
+$app->get('/funcionarios', function (Request $request, Response $response){
+  $funcionarioDAO = FuncionarioDAO::getInstance();
+  $funcionario = array_values($funcionarioDAO->getAll());
 
-  return $response->withJson($cursos);
+  return $response->withJson($funcionarios);
 });
 
 
 /**
- * Rota para recuperar um curso específico
+ * Rota para recuperar um funcionario específico
  *
- *  @param $args vetor com id para ser buscado
  */
-$app->get('/cursos/{id}', function (Request $request, Response $response, $args) {
-  $id = $args['id'];
-  $cursoDAO = CursoDAO::getInstance();
-  $cursos = $cursoDAO->getById($id);
+$app->get('/cursos/{idFuncionario}', function (Request $request, Response $response, $args) {
+  $id = $args['idFuncionario'];
+  $funcionarioDAO = CursoDAO::getInstance();
+  $funcionario = $funcionarioDAO->getById($id);
 
-  return $response->withJson($cursos);
+  return $response->withJson($funcionario);
 });
 
 
