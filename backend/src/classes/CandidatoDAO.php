@@ -1,12 +1,12 @@
 <?php
 
-class CursoDAO implements DefaultDAO
+class CandidatoDAO implements DefaultDAO
 {
 
   private function __construct() {
-    if (!isset($_SESSION["funcionarios"])){
-      $_SESSION["funcionarios"] = array(
-                              '1' => new funcionario(array( 'id' => '1',
+    if (!isset($_SESSION["candidatos"])){
+      $_SESSION["candidatos"] = array(
+                              '1' => new candidato(array( 'id' => '1',
                                                             'login' => 'abmBispo',
                                                             'senha' => 'Ushuaia2',
                                                             'nomeCompleto'=>'Alan Borges Martins Bispo'
@@ -27,16 +27,16 @@ class CursoDAO implements DefaultDAO
 
 
   public function insert($array){
-    $novoFuncionario = new funcionario($array);
-    $novoFuncionario->setId(count($_SESSION["funcionarios"]));
-    $_SESSION["funcionarios"][] = $novoFuncionario;
+    $novoFuncionario = new candidato($array);
+    $novoFuncionario->setId(count($_SESSION["candidatos"]));
+    $_SESSION["candidatos"][] = $novoFuncionario;
     return $novoFuncionario;
   }
 
 
   public function delete($object){
-    if ($_SESSION["funcionarios"][$object->id]){
-      unset($_SESSION["funcionarios"][$object->id]);
+    if ($_SESSION["candidatos"][$object->id]){
+      unset($_SESSION["candidatos"][$object->id]);
       return true; //funcionou a exclusão
     }
     return false; //não rolou a exclusão pq o trem não existia!
@@ -44,17 +44,17 @@ class CursoDAO implements DefaultDAO
 
 
   public function deleteAll() {
-    $_SESSION["funcionarios"] = [];
+    $_SESSION["candidatos"] = [];
   }
 
 
   public function update($object) {
-    $funcionario = $_SESSION["funcionarios"][$object->id];
+    $candidato = $_SESSION["candidatos"][$object->id];
 
-    if($funcionario){
-      $funcionario->login = $object->login;
-      $funcionario->senha = $object->senha;
-      $funcionario->nomeCompleto = $object->nomeCompleto;
+    if($candidato){
+      $candidato->login = $object->login;
+      $candidato->senha = $object->senha;
+      $candidato->nomeCompleto = $object->nomeCompleto;
       return true;
     }
 
@@ -62,17 +62,17 @@ class CursoDAO implements DefaultDAO
   }
 
   public function getById($id) {
-    return $_SESSION["funcionarios"][$id];
+    return $_SESSION["candidatos"][$id];
   }
 
   public function getBy($data){
-    return array_filter($_SESSION["funcionarios"], function($var){
+    return array_filter($_SESSION["candidatos"], function($var){
       return ($var->getId() == $data['id'] || $data['id'] === NULL)
     )}
   }
 
 
   public function getAll() {
-    return $_SESSION["funcionarios"];
+    return $_SESSION["candidatos"];
   }
 }
