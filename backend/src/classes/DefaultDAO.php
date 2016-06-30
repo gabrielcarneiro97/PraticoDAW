@@ -1,8 +1,6 @@
 <?php
-// begin the session
-session_start();
 
-interface DefaultDAO {
+interface DefaultDAO{
 
   /**
    * Insere um objeto
