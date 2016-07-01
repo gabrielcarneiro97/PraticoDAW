@@ -19,37 +19,37 @@ header("Pragma: no-cache");
 
 /**
  * ---------------------------------------------------------------------------
- * ------------------------- ROTA PARA FUNCIONARIOS --------------------------
+ * ------------------------- ROTA PARA CANDIDATO -----------------------------
  * ---------------------------------------------------------------------------
  */
 
  /**
   * Rota para recuperar todos os funcionários
   */
-$app->get('/funcionarios', function (Request $request, Response $response){
-  $funcionarioDAO = FuncionarioDAO::getInstance();
-  $funcionario = array_values($funcionarioDAO->getAll());
+$app->get('/candidatos', function (Request $request, Response $response){
+  $candidatoDAO = CandidatoDAO::getInstance();
+  $candidato = array_values($candidatoDAO->getAll());
 
-  return $response->withJson($funcionarios);
+  return $response->withJson($candidatos);
 });
 
 
 /**
- * Rota para recuperar um funcionario específico
+ * Rota para recuperar um candidato específico
  *
  */
-$app->get('/cursos/{idFuncionario}', function (Request $request, Response $response, $args) {
-  $id = $args['idFuncionario'];
-  $funcionarioDAO = CursoDAO::getInstance();
-  $funcionario = $funcionarioDAO->getById($id);
+$app->get('/candidatos/{idCandidato}', function (Request $request, Response $response, $args) {
+  $id = $args['idCandidato'];
+  $candidatoDAO = CandidatoDAO::getInstance();
+  $candidato = $candidatoDAO->getById($id);
 
-  return $response->withJson($funcionario);
+  return $response->withJson($candidato);
 });
 
 
 /**
  * ---------------------------------------------------------------------------
- * ------------------------- ROTAS PARA VIDEOS -------------------------
+ * ------------------------- ROTAS PARA VIDEOS -------------------------------
  * ---------------------------------------------------------------------------
  */
 

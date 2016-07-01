@@ -3,14 +3,13 @@
 /**
  * Classe que contém as informações de cada candidato
  */
-class Candidato
-{
+class Candidato{
 
   private $id; //para a pesquisa nos arquivos
   private $login; // para o acesso dos usuários funcionários no sistema
   private $senha; // para o acesso dos usuários funcionários no sistema
   private $nomeCompleto;
-
+  
   /**
    *  Construtor que recebe um vetor com os atributos do funcionário
    *
@@ -29,13 +28,21 @@ class Candidato
       $this->id = $id;
   }
   public function getLogin(){
-      return $this->nome;
+      return $this->login;
+  }
+  public function setLogin($Login){
+      $this->login = $Login;
   }
   protected function getSenha(){
       return $this->senha;
   }
+  protected function setSenha($Senha){
+      $this->senha = $Senha;
+  }
   public function getNomeCompleto(){
       return $this->nomeCompleto;
   }
-
+  public function setNomeCompleto($name){
+      $this->nomeCompleto = $name;
+  }
 }
