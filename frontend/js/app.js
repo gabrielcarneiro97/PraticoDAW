@@ -286,5 +286,12 @@ app.controller('PerfilController', ['$sce', '$scope', '$location', 'Service', fu
  * @param $scope escopo do controller
  */
 app.controller('BuscaController', ['$sce', '$scope', '$location', 'Service', function($sce, $scope, $location, service) {
+  var itens = [];
+  for (var i = 0; i < 10; i++) {
+    itens[i] = {};
+    itens[i].title = 'Job ' + i;
+    itens[i].desc = 'lorem ' + i + ' bolo';
+  }
+  $scope.itens = itens;
 
 }]);
