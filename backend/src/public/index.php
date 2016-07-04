@@ -24,7 +24,7 @@ header("Pragma: no-cache");
  */
 
  /**
-  * Rota para recuperar todos os funcionários
+  * Rota para recuperar todos os candidatos
   */
 $app->get('/candidatos', function (Request $request, Response $response){
   $candidatoDAO = CandidatoDAO::getInstance();
@@ -37,7 +37,7 @@ $app->get('/candidatos', function (Request $request, Response $response){
 /**
  * Rota para recuperar um candidato específico
  *
- */
+**/
 $app->get('/candidatos/{idCandidato}', function (Request $request, Response $response, $args) {
   $id = $args['idCandidato'];
   $candidatoDAO = CandidatoDAO::getInstance();
@@ -46,6 +46,15 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
   return $response->withJson($candidato);
 });
 
+/**
+ * Rota para cadastrar um novo candidato
+ *
+**/
+$app->post('/cadastro', function (Request $request, Response $response){
+  $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
+  $candidatoDAO = CandidatoDAO::getInstance();
+  $candidatoDAO->inssert($data);
+});
 
 /**
  * ---------------------------------------------------------------------------
