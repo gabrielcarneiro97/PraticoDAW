@@ -30,6 +30,7 @@ class CandidatoDAO implements DefaultDAO{
     $novoCandidato = new Candidato($array);
     $novoCandidato->setId(getId());
     cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
+    return $novoCandidato;
   }
 
 

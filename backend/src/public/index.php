@@ -53,7 +53,8 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
 $app->post('/cadastro', function (Request $request, Response $response){
   $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
   $candidatoDAO = CandidatoDAO::getInstance();
-  $candidatoDAO->inssert($data);
+  $novoCandidato = $candidatoDAO->insert($data);
+  return $response->withJson($novoCandidato);
 });
 
 /**
