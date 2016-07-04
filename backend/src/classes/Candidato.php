@@ -8,24 +8,34 @@ class Candidato{
   private $id; //para a pesquisa nos arquivos
   private $login; // para o acesso dos usuários funcionários no sistema
   private $senha; // para o acesso dos usuários funcionários no sistema
-  private $nomeCompleto;
-  
+  private $primeiroNome;
+  private $sobreNome;
+  private $tipoSexo;
+  private $cidade;
+  private $estado;
+  private $pais;
+
   /**
-   *  Construtor que recebe um vetor com os atributos do funcionário
+   *  Construtor que recebe um vetor com os atributos do candidato
    *
    * @param array $data vetor com os atritbutos do curso
    */
   function __construct(array $data){
+    $this->id = $data['id'];
     $this->login = $data['login'];
     $this->senha = $data['senha'];
-    $this->nomeCompleto = $data['nomeCompleto'];
+    $this->primeiroNome = $data['primeiroNome'];
+    $this->sobreNome = $data['sobreCompleto'];
+    $this->tipoSexo = $data['tipoSexo'];
+    $this->cidade = $data['cidade'];
+    $this->estado = $data['estado'];
+    $this->pais = $data['pais'];
   }
 
+
+//Getters & Setters para o login
   public function getId(){
       return $this->id;
-  }
-  public function setId($id){
-      $this->id = $id;
   }
   public function getLogin(){
       return $this->login;
@@ -39,10 +49,46 @@ class Candidato{
   protected function setSenha($Senha){
       $this->senha = $Senha;
   }
-  public function getNomeCompleto(){
-      return $this->nomeCompleto;
+
+//Getters & Setters de $primeiroNome
+  public function getPrimeiroNome(){
+      return $this->primeiroNome;
   }
-  public function setNomeCompleto($name){
-      $this->nomeCompleto = $name;
+  public function setPrimeiroNome($Pname){
+      $this->primeiroNome = $Pname;
   }
+
+//Getters & Setters de $sobreNome
+  public function getSobreNome(){
+      return $this->sobreNome;
+  }
+  public function setSobreNome($Sname){
+      $this->sobreNome = $Sname;
+  }
+
+//Getters & Setters de $tipoSexo
+  public function getTipoSexo(){
+      return $this->sobreNome;
+  }
+
+//Getters & Setters de $cidade
+  public function getCidade(){
+      return $this->cidade;
+  }
+  public function setCidade($newCidade){
+      $this->cidade = $newCidade;
+
+//Getters & Setters de $estado
+  public function getEstado(){
+      return $this->estado;
+  }
+  public function setEstado($newEstado){
+      $this->estado = $newEstado;
+
+//Getters & Setters de $pais
+  public function getPais(){
+      return $this->Pais;
+  }
+  public function setPais($newPais){
+      $this->pais = $newPais;
 }
