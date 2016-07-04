@@ -2,18 +2,11 @@
   <h3 class="center">Vagas</h3>
   <div class="row center">
     <ul class="collapsible popout col s10 offset-s1" data-collapsible="accordion">
-    <li>
-      <div class="collapsible-header">First</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-    <li>
-      <div class="collapsible-header">Second</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-    <li>
-      <div class="collapsible-header">Third</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
+      <li ng-repeat="infos in itens track by $index">
+        <div class="collapsible-header">{{infos.title}}</div>
+        <div class="collapsible-body"><p>{{infos.desc}}</p></div>
+        </div>
+      </li>
   </ul>
   </div>
 </div>
