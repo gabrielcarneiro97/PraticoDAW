@@ -4,18 +4,8 @@ class CandidatoDAO implements DefaultDAO{
 
   require '../funcs/cadastro.php';
 
-  private $jsonLogin;
-
   private function __construct(){
-    $file = fopen("login.json", "r") or die("Unable to proceed!");
-    $jsonStr = "";
-
-    while(!feof($file)) $jsonStr .= fgets($file);
-    $jsonLogin = json_encode($jsonStr);
-
-    fclose($file);
   }
-
 
   public static function getInstance() {
     static $instance = null;
@@ -25,13 +15,21 @@ class CandidatoDAO implements DefaultDAO{
     return $instance;
   }
 
+  private function getId(){
+    $file = fopen("login.json", "r") or die("Unable to proceed!");
+    $jsonStr = "";
+
+    while(!feof($file)) $jsonStr .= fgets($file);
+    $jsonLogin = json_encode($jsonStr);
+    fclose($file);
+
+    return count($jsonLogin);
+  }
 
   public function insert($array){
-    $novoCandidato = new candidato($array);
-    $novoCandidato->setId(count($jsonLogin));
+    $novoCandidato = new Candidato($array);
+    $novoCandidato->setId(getId());
     cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
-    //Temos que completar a função de cadastro para gerar um candidato com mais
-    //informações, além de login e senha.
   }
 
 
