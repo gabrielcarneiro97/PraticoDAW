@@ -2,9 +2,27 @@
 
 class CandidatoDAO implements DefaultDAO{
 
-  require '../funcs/cadastro.php';
-
   private function __construct(){
+  }
+
+  private function cadastra($login,$senha){
+    $jsonToPrint = array( 'login' => $login,
+                          'senha' => $senha);
+
+    $oldFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "r") or die("Unable to open file!");
+    $jsonStr = "";
+
+    while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
+
+    fclose($oldFile);
+
+    json_encode($jsonToPrint);
+    $newJson = json_decode($jsonStr, true);
+    $newJson[] = $jsonToPrint;
+
+    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "w") or die("Unable to open file!");
+    fwrite($newFile, json_encode($newJson));
+    fclose($newFile);
   }
 
   public static function getInstance() {
@@ -16,7 +34,7 @@ class CandidatoDAO implements DefaultDAO{
   }
 
   private function getId(){
-    $file = fopen("login.json", "r") or die("Unable to proceed!");
+    $file = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "r") or die("Unable to proceed!");
     $jsonStr = "";
 
     while(!feof($file)) $jsonStr .= fgets($file);
@@ -28,8 +46,8 @@ class CandidatoDAO implements DefaultDAO{
 
   public function insert($array){
     $novoCandidato = new Candidato($array);
-    $novoCandidato->setId(getId());
-    cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
+    $novoCandidato->setId($this->getId());
+    $this->cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
     return $novoCandidato;
   }
 
@@ -66,9 +84,9 @@ class CandidatoDAO implements DefaultDAO{
   }
 
   public function getBy($data){
-    return array_filter($_SESSION["candidatos"], function($var){
-      return ($var->getId() == $data['id'] || $data['id'] === NULL)
-    )}
+    return array_filter($_SESSION["candidatos"],function($var){
+      return ($var->getId() == $data['id'] || $data['id'] === NULL);
+    });
   }
 
 
