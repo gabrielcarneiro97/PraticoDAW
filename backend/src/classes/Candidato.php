@@ -24,7 +24,7 @@ class Candidato{
     $this->login = $data['login'];
     $this->senha = $data['senha'];
     $this->primeiroNome = $data['primeiroNome'];
-    $this->sobreNome = $data['sobreCompleto'];
+    $this->sobreNome = $data['sobreNome'];
     $this->tipoSexo = $data['tipoSexo'];
     $this->cidade = $data['cidade'];
     $this->estado = $data['estado'];
@@ -70,7 +70,7 @@ class Candidato{
 
 //Getters & Setters de $tipoSexo
   public function getTipoSexo(){
-      return $this->sobreNome;
+      return $this->tipoSexo;
   }
 
 //Getters & Setters de $cidade
@@ -89,7 +89,7 @@ class Candidato{
   }
 //Getters & Setters de $pais
   public function getPais(){
-      return $this->Pais;
+      return $this->pais;
   }
   public function setPais($newPais){
       $this->pais = $newPais;

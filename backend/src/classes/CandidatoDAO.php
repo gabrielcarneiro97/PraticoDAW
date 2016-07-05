@@ -9,7 +9,7 @@ class CandidatoDAO implements DefaultDAO{
     $jsonToPrint = array( 'login' => $login,
                           'senha' => $senha);
 
-    $oldFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "r") or die("Unable to open file!");
+    $oldFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
 
     while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
@@ -20,7 +20,24 @@ class CandidatoDAO implements DefaultDAO{
     $newJson = json_decode($jsonStr, true);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "w") or die("Unable to open file!");
+    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "w") or die("Unable to open file!");
+    fwrite($newFile, json_encode($newJson));
+    fclose($newFile);
+  }
+
+  private function insertData($pNome,$sNome,$sex,$cidade,$estado,$pais,$id){
+    $jsonToPrint = array( 'pNome' => $pNome,
+                          'sNome' => $sNome,
+                          'sex' => $sex,
+                          'cidade' => $cidade,
+                          'estado' => $estado,
+                          'pais' => $pais
+                          );
+
+    json_encode($jsonToPrint);
+    $newJson[] = $jsonToPrint;
+
+    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\data'.'\\'.$id.'.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -33,21 +50,35 @@ class CandidatoDAO implements DefaultDAO{
     return $instance;
   }
 
-  private function getId(){
-    $file = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\logs\login.json', "r") or die("Unable to proceed!");
+  private function getIdToUser(){
+    $file = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "r") or die("Unable to proceed!");
     $jsonStr = "";
 
     while(!feof($file)) $jsonStr .= fgets($file);
-    $jsonLogin = json_encode($jsonStr);
     fclose($file);
+    $jsonLogin = json_encode($jsonStr);
 
-    return count($jsonLogin);
+    $varCount=0;
+
+    for ($i=0; $i<strlen($jsonLogin); $i++)
+      if($jsonLogin[$i]=='{')
+        $varCount++;
+
+    return $varCount;
   }
 
   public function insert($array){
     $novoCandidato = new Candidato($array);
-    $novoCandidato->setId($this->getId());
+    $novoCandidato->setId($this->getIdToUser());
     $this->cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
+    $this->insertData($novoCandidato->getPrimeiroNome(),
+                      $novoCandidato->getSobreNome(),
+                      $novoCandidato->getTipoSexo(),
+                      $novoCandidato->getCidade(),
+                      $novoCandidato->getEstado(),
+                      $novoCandidato->getPais(),
+                      $novoCandidato->getId()
+                      );
     return $novoCandidato;
   }
 

@@ -54,8 +54,20 @@ $app->get('/', function (Request $request, Response $response){
   echo "<form action='/cadastro' method='post'>
           Login:
           <input type='text' name='login'><br>
-          senha:
-          <input type='password' name='senha'><br><br>
+          Senha:
+          <input type='password' name='senha'><br>
+          Nome:
+          <input type='text' name='primeiroNome'><br>
+          Sobre nome:
+          <input type='text' name='sobreNome'><br>
+          Sexo:
+          <input type='text' name='tipoSexo'><br>
+          Cidade:
+          <input type='text' name='cidade'><br>
+          Estado:
+          <input type='text' name='estado'><br>
+          País:
+          <input type='text' name='pais'><br><br>
           <input type='submit' value='Cadastrar'>
         </form>
         ";
