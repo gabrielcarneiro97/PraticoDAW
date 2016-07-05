@@ -50,6 +50,21 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
  * Rota para cadastrar um novo candidato
  *
 **/
+$app->get('/', function (Request $request, Response $response){
+  echo "<form action='/cadastro' method='post'>
+          Login:
+          <input type='text' name='login'><br>
+          senha:
+          <input type='password' name='senha'><br><br>
+          <input type='submit' value='Cadastrar'>
+        </form>
+        ";
+});
+
+/**
+ * Rota para a persistência de um novo candidato
+ *
+**/
 $app->post('/cadastro', function (Request $request, Response $response){
   $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
   $candidatoDAO = CandidatoDAO::getInstance();
