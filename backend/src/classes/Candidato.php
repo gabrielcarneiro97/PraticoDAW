@@ -21,7 +21,6 @@ class Candidato{
    * @param array $data vetor com os atritbutos do curso
    */
   function __construct(array $data){
-    $this->id = $data['id'];
     $this->login = $data['login'];
     $this->senha = $data['senha'];
     $this->primeiroNome = $data['primeiroNome'];
@@ -37,16 +36,19 @@ class Candidato{
   public function getId(){
       return $this->id;
   }
+  public function setId($idSet){
+    $this->id = $idSet;
+  }
   public function getLogin(){
       return $this->login;
   }
   public function setLogin($Login){
       $this->login = $Login;
   }
-  protected function getSenha(){
+  public function getSenha(){
       return $this->senha;
   }
-  protected function setSenha($Senha){
+  public function setSenha($Senha){
       $this->senha = $Senha;
   }
 
@@ -77,18 +79,19 @@ class Candidato{
   }
   public function setCidade($newCidade){
       $this->cidade = $newCidade;
-
+  }
 //Getters & Setters de $estado
   public function getEstado(){
       return $this->estado;
   }
   public function setEstado($newEstado){
       $this->estado = $newEstado;
-
+  }
 //Getters & Setters de $pais
   public function getPais(){
       return $this->Pais;
   }
   public function setPais($newPais){
       $this->pais = $newPais;
+  }
 }
