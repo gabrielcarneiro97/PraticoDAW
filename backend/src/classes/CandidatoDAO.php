@@ -15,6 +15,30 @@ class CandidatoDAO implements DefaultDAO{
   }
 
 //--************************************************************************--//
+//--****************Inicio dos métodos de login do usuário******************--//
+//--************************************************************************--//
+
+  public function verificaLogin($login,$senha){
+    $file = fopen("../private/logs/login.json",'r');
+    $jsonStr = '';
+
+    while(!feof($file)) $jsonStr .= fgets($file);
+    fclose($file);
+
+    $arrayLogin = json_decode($jsonStr, true);
+
+    for($i=0; $i < ; $i++){ 
+
+    }
+
+  }
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//--************************************************************************--//
 //--*************Inicio dos métodos de persistência e cadastro**************--//
 //--************************************************************************--//
 
@@ -26,7 +50,7 @@ class CandidatoDAO implements DefaultDAO{
     $jsonToPrint = array( 'login' => $login,
                           'senha' => $senha);
 
-    $oldFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "r") or die("Unable to open file!");
+    $oldFile = fopen('../private/logs/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
 
     while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
@@ -37,7 +61,7 @@ class CandidatoDAO implements DefaultDAO{
     $newJson = json_decode($jsonStr, true);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/logs/login.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -46,8 +70,10 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados do usuário
   *  no diretório src\private\userdata com o nome userdata-{id do usuário}.json
   */
-  private function insertData($pNome,$sNome,$sex,$cidade,$estado,$pais,$id){
-    $jsonToPrint = array( 'pNome' => $pNome,
+  private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id){
+    $jsonToPrint = array( 'login' => $login,
+                          'senha' => $senha,
+                          'pNome' => $pNome,
                           'sNome' => $sNome,
                           'sex' => $sex,
                           'cidade' => $cidade,
@@ -58,7 +84,7 @@ class CandidatoDAO implements DefaultDAO{
     json_encode($jsonToPrint);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\userdata'.'\userdata-'.$id.'.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/userdata'.'/userdata-'.$id.'.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -70,7 +96,9 @@ class CandidatoDAO implements DefaultDAO{
     $novoCandidato = new Candidato($array);
     $novoCandidato->setId($this->getIdToUser());
     $this->cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
-    $this->insertData($novoCandidato->getPrimeiroNome(),
+    $this->insertData($novoCandidato->getLogin(),
+                      $novoCandidato->getSenha(),
+                      $novoCandidato->getPrimeiroNome(),
                       $novoCandidato->getSobreNome(),
                       $novoCandidato->getTipoSexo(),
                       $novoCandidato->getCidade(),
@@ -132,7 +160,7 @@ class CandidatoDAO implements DefaultDAO{
 ////////////////////////////////////////////////////////////////////////////////
 
 //--************************************************************************--//
-//--*******Início dos métodos para a atualização de dados dos usuários******--//
+//--*******************Início dos métodos auxiliares************************--//
 //--************************************************************************--//
 
   /*
@@ -140,7 +168,15 @@ class CandidatoDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getById($id) {
-    return $_SESSION["candidatos"][$id];
+    $file = fopen("../private/userdata/userdata-".$id.'.json','r');
+    $jsonStr = '';
+
+    while(!feof($file)) $jsonStr .= fgets($file);
+    fclose($file);
+
+    $arrayCandidato = json_decode($jsonStr, true);
+    $novoCandidato = new Candidato($arrayCandidato);
+    return $novoCandidato;
   }
 
   /*
@@ -149,13 +185,11 @@ class CandidatoDAO implements DefaultDAO{
   public function getAll(){
     return $_SESSION["candidatos"];
   }
-}
-
   /*
   *  Função padrão que retorna a quantidade de usuários listados no login.json.
   */
   private function getIdToUser(){
-    $file = fopen('C:\Users\srala\Desktop\Info\DAW\2trim\PraticoDAW\backend\src\private\logs\login.json', "r") or die("Unable to proceed!");
+    $file = fopen('../private/logs/login.json', "r") or die("Unable to proceed!");
     $jsonStr = "";
 
     while(!feof($file)) $jsonStr .= fgets($file);
@@ -170,3 +204,4 @@ class CandidatoDAO implements DefaultDAO{
 
     return $varCount;
   }
+}

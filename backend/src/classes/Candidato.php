@@ -5,15 +5,15 @@
  */
 class Candidato{
 
-  private $id; //para a pesquisa nos arquivos
-  private $login; // para o acesso dos usuários funcionários no sistema
-  private $senha; // para o acesso dos usuários funcionários no sistema
-  private $primeiroNome;
-  private $sobreNome;
-  private $tipoSexo;
-  private $cidade;
-  private $estado;
-  private $pais;
+  public $id; //para a pesquisa nos arquivos
+  public $login; // para o acesso dos usuários funcionários no sistema
+  public $senha; // para o acesso dos usuários funcionários no sistema
+  public $primeiroNome;
+  public $sobreNome;
+  public $tipoSexo;
+  public $cidade;
+  public $estado;
+  public $pais;
 
   /**
    *  Construtor que recebe um vetor com os atributos do candidato
