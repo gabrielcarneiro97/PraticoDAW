@@ -37,13 +37,6 @@ interface DefaultDAO{
   public function getById($id);
 
   /**
-   * Recupera uma lista de objetos com base em um vetor de parâmetros
-   *
-   * @param $data vetor com parâmetros da pesquisa
-   */
-  public function getBy($data);
-
-  /**
    * Recupera todos os elementos cadastrados
    */
   public function getAll();
