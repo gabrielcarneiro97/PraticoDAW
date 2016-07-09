@@ -18,19 +18,24 @@ class CandidatoDAO implements DefaultDAO{
 //--****************Inicio dos métodos de login do usuário******************--//
 //--************************************************************************--//
 
-  public function verificaLogin($login,$senha){
-    $file = fopen("../private/logs/login.json",'r');
-    $jsonStr = '';
+  public function validate($login,$senha){
+    for ($i=0; $i <= $this->getIdToUser()-1; $i++){
+      $file = fopen("../private/userdata/userdata-".$i.'.json','r');
+      $jsonStr = '';
 
-    while(!feof($file)) $jsonStr .= fgets($file);
-    fclose($file);
+      while(!feof($file)){$jsonStr .= fgets($file);}
+      fclose($file);
 
-    $arrayLogin = json_decode($jsonStr, true);
+      $arrayCandidato = json_decode($jsonStr, true);
 
-    for($i=0; $i < ; $i++){ 
+      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==$senha){
+        $novoCandidato = new Candidato($arrayCandidato[0]);
+        $novoCandidato->setId($arrayCandidato[0]['id']);
+        return $novoCandidato;
+      }
 
     }
-
+    return 0;
   }
 
 
@@ -71,11 +76,12 @@ class CandidatoDAO implements DefaultDAO{
   *  no diretório src\private\userdata com o nome userdata-{id do usuário}.json
   */
   private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id){
-    $jsonToPrint = array( 'login' => $login,
+    $jsonToPrint = array( 'id' => $id,
+                          'login' => $login,
                           'senha' => $senha,
-                          'pNome' => $pNome,
-                          'sNome' => $sNome,
-                          'sex' => $sex,
+                          'primeiroNome' => $pNome,
+                          'sobreNome' => $sNome,
+                          'tipoSexo' => $sex,
                           'cidade' => $cidade,
                           'estado' => $estado,
                           'pais' => $pais
@@ -167,16 +173,19 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão que retorna um usuário em específico
   *  caçando pelo id dele no sistema.
   */
-  public function getById($id) {
-    $file = fopen("../private/userdata/userdata-".$id.'.json','r');
-    $jsonStr = '';
+  public function getById($id){
+    try {
+      $file = fopen("../private/userdata/userdata-".$id.'.json','r');
+    }catch(Exception $e){
+      return withJson(0);
+    }
 
+    $jsonStr = '';
     while(!feof($file)) $jsonStr .= fgets($file);
     fclose($file);
-
     $arrayCandidato = json_decode($jsonStr, true);
-    $novoCandidato = new Candidato($arrayCandidato);
-    return $novoCandidato;
+
+    return $arrayCandidato;
   }
 
   /*

@@ -51,7 +51,7 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
  *
 **/
 $app->get('/login', function (Request $request, Response $response){
-  echo "<form action='/cadastro' method='post'>
+  echo "<form action='/candidato/main' method='post'>
           Login:
           <input type='text' name='login'><br>
           Senha:
@@ -79,6 +79,8 @@ $app->post('/cadastro', function (Request $request, Response $response){
 $app->post('/candidato/main', function (Request $request, Response $response){
   $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
   $candidatoDAO = CandidatoDAO::getInstance();
-  $novoCandidato = $candidatoDAO->getById($data['login']);
+  $novoCandidato = $candidatoDAO->validate($data['login'],$data['senha']);
   return $response->withJson($novoCandidato);
 });
+
+$app->run();
