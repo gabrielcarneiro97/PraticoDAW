@@ -61,6 +61,18 @@ $app->get('/login', function (Request $request, Response $response){
         ";
 });
 
+$app->get('/login_error', function (Request $request, Response $response){
+  echo "<h1>Você inseriu os dados errados, tente novamente!</h1>
+        <form action='/candidato/main' method='post'>
+          Login:
+          <input type='text' name='login'><br>
+          Senha:
+          <input type='password' name='senha'><br>
+          <input type='submit' value='entrar'>
+        </form>
+        ";
+});
+
 /**
  * Rota para a persistência de um novo candidato
  *
@@ -76,11 +88,17 @@ $app->post('/cadastro', function (Request $request, Response $response){
  * Rota para o login de um novo candidato
  *
 **/
-$app->post('/candidato/main', function (Request $request, Response $response){
-  $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
-  $candidatoDAO = CandidatoDAO::getInstance();
-  $novoCandidato = $candidatoDAO->validate($data['login'],$data['senha']);
-  return $response->withJson($novoCandidato);
+$app->post('/candidato/main', function(Request $request, Response $response){
+  try{
+    $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
+    $candidatoDAO = CandidatoDAO::getInstance();
+    $novoCandidato = $candidatoDAO->validate($data['login'],$data['senha']);
+    return $response->withJson($novoCandidato);
+  }catch(validateException $e){
+    return $response->withStatus(403);
+  }
 });
+
+//$app->halt(403, 'You shall not pass!');
 
 $app->run();

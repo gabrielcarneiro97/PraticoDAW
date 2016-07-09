@@ -33,9 +33,8 @@ class CandidatoDAO implements DefaultDAO{
         $novoCandidato->setId($arrayCandidato[0]['id']);
         return $novoCandidato;
       }
-
     }
-    return 0;
+    throw new validateException();
   }
 
 
@@ -177,7 +176,7 @@ class CandidatoDAO implements DefaultDAO{
     try {
       $file = fopen("../private/userdata/userdata-".$id.'.json','r');
     }catch(Exception $e){
-      return withJson(0);
+      return 0;
     }
 
     $jsonStr = '';
