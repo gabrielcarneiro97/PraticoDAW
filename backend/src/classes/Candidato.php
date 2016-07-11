@@ -100,4 +100,7 @@ class Candidato{
   public function setEmail($newEmail){
     $this->email = $newEmail;
   }
+  public function getEmail(){
+    return $this->email;
+  }
 }

@@ -152,7 +152,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão de atualização dos usuários do sistema.
   */
   public function update($object) {
-    $candidato = $_SESSION["candidatos"][$object->id];
+    $candidato = getById([$object->id]);
 
     if($candidato){
       $candidato->login = $object->login;
