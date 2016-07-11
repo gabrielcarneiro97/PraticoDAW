@@ -74,7 +74,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados do usuário
   *  no diretório src\private\userdata com o nome userdata-{id do usuário}.json
   */
-  private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id){
+  private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
                           'senha' => $senha,
@@ -83,7 +83,8 @@ class CandidatoDAO implements DefaultDAO{
                           'tipoSexo' => $sex,
                           'cidade' => $cidade,
                           'estado' => $estado,
-                          'pais' => $pais
+                          'pais' => $pais,
+                          'email' => $email
                           );
 
     json_encode($jsonToPrint);
@@ -109,7 +110,8 @@ class CandidatoDAO implements DefaultDAO{
                       $novoCandidato->getCidade(),
                       $novoCandidato->getEstado(),
                       $novoCandidato->getPais(),
-                      $novoCandidato->getId()
+                      $novoCandidato->getId(),
+                      $novoCandidato->getEmail()
                       );
     return $novoCandidato;
   }
@@ -191,7 +193,11 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão que retorna todos os usuário do sistema.
   */
   public function getAll(){
-    return $_SESSION["candidatos"];
+    $file = fopen('../private/logs/login.json', "r") or die("Unable to proceed!");
+    while(!feof($file)){
+      $candidatos .= fgets($file);
+    }
+    return $candidatos;
   }
   /*
   *  Função padrão que retorna a quantidade de usuários listados no login.json.

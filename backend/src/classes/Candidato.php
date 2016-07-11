@@ -14,6 +14,7 @@ class Candidato{
   public $cidade;
   public $estado;
   public $pais;
+  public $email;
 
   /**
    *  Construtor que recebe um vetor com os atributos do candidato
@@ -29,6 +30,7 @@ class Candidato{
     $this->cidade = $data['cidade'];
     $this->estado = $data['estado'];
     $this->pais = $data['pais'];
+    $this->email = $data['email'];
   }
 
 
@@ -93,5 +95,9 @@ class Candidato{
   }
   public function setPais($newPais){
       $this->pais = $newPais;
+  }
+//Setter para email
+  public function setEmail($newEmail){
+    $this->email = $newEmail;
   }
 }
