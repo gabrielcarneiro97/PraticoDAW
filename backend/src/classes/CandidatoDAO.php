@@ -224,4 +224,10 @@ class CandidatoDAO implements DefaultDAO{
 
     return $varCount;
   }
+  /*
+  * Função para validação do Email.
+  */
+  private function validateEmail($email){
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+  }
 }
