@@ -96,7 +96,7 @@ class Candidato{
   public function setPais($newPais){
       $this->pais = $newPais;
   }
-//Setter para email
+//Getters $ Setters para email
   public function setEmail($newEmail){
     $this->email = $newEmail;
   }

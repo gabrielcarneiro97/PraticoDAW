@@ -26,18 +26,12 @@ class CandidatoDAO implements DefaultDAO{
 
     $arrayLogins = json_decode($jsonStr, true);
 
-<<<<<<< HEAD
-    for($i=0; $i <= $this->getIdToUser()-1; $i++)
-      if($arrayLogins[$i]['login']==$login&&$arrayLogins[$i]['senha']==$senha)
-        return $arrayLogins[$i]['id'];
-=======
       if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==crypt($senha, '_J9..rasm')){
         $novoCandidato = new Candidato($arrayCandidato[0]);
         $novoCandidato->setId($arrayCandidato[0]['id']);
         return $novoCandidato;
       }
     }
->>>>>>> e1415503a07e81388819885fbfdbc74043afbf9b
     throw new ValidateException();
   }
 
