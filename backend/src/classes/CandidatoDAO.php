@@ -19,21 +19,16 @@ class CandidatoDAO implements DefaultDAO{
 //--************************************************************************--//
 
   public function validate($login,$senha){
-    for ($i=0; $i <= $this->getIdToUser()-1; $i++){
-      $file = fopen("../private/userdata/userdata-".$i.'.json','r');
-      $jsonStr = '';
+    $file = fopen("../private/logindata/login.json",'r');
+    $jsonStr = '';
 
-      while(!feof($file)){$jsonStr .= fgets($file);}
-      fclose($file);
+    while(!feof($file)) $jsonStr .= fgets($file);
 
-      $arrayCandidato = json_decode($jsonStr, true);
+    $arrayLogins = json_decode($jsonStr, true);
 
-      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==$senha){
-        $novoCandidato = new Candidato($arrayCandidato[0]);
-        $novoCandidato->setId($arrayCandidato[0]['id']);
-        return $novoCandidato;
-      }
-    }
+    for($i=0; $i <= $this->getIdToUser()-1; $i++)
+      if($arrayLogins[$i]['login']==$login&&$arrayLogins[$i]['senha']==$senha)
+        return $arrayLogins[$i]['id'];
     throw new ValidateException();
   }
 
@@ -50,11 +45,12 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados de login dos usuários dentro do
   *  diretório src/private/logs/ no arquivo login.json.
   */
-  private function cadastra($login,$senha){
-    $jsonToPrint = array( 'login' => $login,
+  private function cadastra($id,$login,$senha){
+    $jsonToPrint = array( 'id'    => $id,
+                          'login' => $login,
                           'senha' => $senha);
 
-    $oldFile = fopen('../private/logs/login.json', "r") or die("Unable to open file!");
+    $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
 
     while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
@@ -65,7 +61,7 @@ class CandidatoDAO implements DefaultDAO{
     $newJson = json_decode($jsonStr, true);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('../private/logs/login.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/logindata/login.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -90,7 +86,7 @@ class CandidatoDAO implements DefaultDAO{
     json_encode($jsonToPrint);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('../private/userdata'.'/userdata-'.$id.'.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -101,7 +97,9 @@ class CandidatoDAO implements DefaultDAO{
   public function insert($array){
     $novoCandidato = new Candidato($array);
     $novoCandidato->setId($this->getIdToUser());
-    $this->cadastra($novoCandidato->getLogin(),$novoCandidato->getSenha());
+    $this->cadastra($novoCandidato->getId(),
+                    $novoCandidato->getLogin(),
+                    $novoCandidato->getSenha());
     $this->insertData($novoCandidato->getLogin(),
                       $novoCandidato->getSenha(),
                       $novoCandidato->getPrimeiroNome(),
@@ -138,7 +136,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão de deletar todos os usuários do sistema.
   */
   public function deleteAll() {
-    $file = fopen("../private/logs/login.json", "w");
+    $file = fopen("../private/logindata/login.json", "w");
     fclose($file);
     for($i=0; $i<=getIdToUser()-1; $i++){
       $file = fopen("../private/userdata/userdata-".$i.".json", "w");
@@ -192,14 +190,14 @@ class CandidatoDAO implements DefaultDAO{
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
 
-    return $arrayCandidato;
+    return new Candidato($arrayCandidato);
   }
 
   /*
   *  Função padrão que retorna todos os usuário do sistema.
   */
   public function getAll(){
-    $file = fopen('../private/logs/login.json', "r") or die("Unable to proceed!");
+    $file = fopen('../private/logindata/login.json', "r") or die("Unable to proceed!");
     while(!feof($file)){
       $candidatos .= fgets($file);
     }
@@ -209,7 +207,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão que retorna a quantidade de usuários listados no login.json.
   */
   private function getIdToUser(){
-    $file = fopen('../private/logs/login.json', "r") or die("Unable to proceed!");
+    $file = fopen('../private/logindata/login.json', "r") or die("Unable to proceed!");
     $jsonStr = "";
 
     while(!feof($file)) $jsonStr .= fgets($file);
