@@ -61,18 +61,6 @@ $app->get('/login', function (Request $request, Response $response){
         ";
 });
 
-$app->get('/login_error', function (Request $request, Response $response){
-  echo "<h1>Você inseriu os dados errados, tente novamente!</h1>
-        <form action='/candidato/main' method='post'>
-          Login:
-          <input type='text' name='login'><br>
-          Senha:
-          <input type='password' name='senha'><br>
-          <input type='submit' value='entrar'>
-        </form>
-        ";
-});
-
 /**
  * Rota para a persistência de um novo candidato
  *
@@ -95,7 +83,7 @@ $app->post('/candidato/main', function(Request $request, Response $response){
     $novoCandidatoID = $candidatoDAO->validate($data['login'],$data['senha']);
     $novoCandidato = $candidatoDAO->getById($novoCandidatoID);
     return $response->withJson($novoCandidato);
-  }catch(validateException $e){
+  }catch(ValidateException $e){
     return $response->withStatus(403);
   }
 });

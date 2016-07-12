@@ -26,10 +26,9 @@ class CandidatoDAO implements DefaultDAO{
 
     $arrayLogins = json_decode($jsonStr, true);
 
-      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==crypt($senha, '_J9..rasm')){
-        $novoCandidato = new Candidato($arrayCandidato[0]);
-        $novoCandidato->setId($arrayCandidato[0]['id']);
-        return $novoCandidato;
+    for($i=0; $i <= $this->getIdToUser()-1; $i++){
+      if($arrayLogins[$i]['login'] == $login && $arrayLogins[$i]['senha'] == crypt($senha, 'jobFinder')){
+        return $arrayLogins[$i]['id'];
       }
     }
     throw new ValidateException();
@@ -48,9 +47,10 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados de login dos usuários dentro do
   *  diretório src/private/logs/ no arquivo login.json.
   */
-  private function cadastra($login,$senha){
-    $jsonToPrint = array( 'login' => $login,
-                          'senha' => crypt($senha, '_J9..rasm'));
+  private function cadastra($id,$login,$senha){
+    $jsonToPrint = array( 'id' => $id,
+                          'login' => $login,
+                          'senha' => crypt($senha, 'jobFinder'));
 
     $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
@@ -75,7 +75,7 @@ class CandidatoDAO implements DefaultDAO{
   private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
-                          'senha' => crypt($senha, '_J9..rasm'),
+                          'senha' => crypt($senha, 'jobFinder'),
                           'primeiroNome' => $pNome,
                           'sobreNome' => $sNome,
                           'tipoSexo' => $sex,
@@ -192,7 +192,9 @@ class CandidatoDAO implements DefaultDAO{
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
 
-    return new Candidato($arrayCandidato);
+    $novoCandidato = new Candidato($arrayCandidato[0]);
+    $novoCandidato->setId($arrayCandidato[0]['id']);
+    return $novoCandidato;
   }
 
   /*
