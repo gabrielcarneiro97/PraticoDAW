@@ -99,6 +99,16 @@ $app->post('/candidato/main', function(Request $request, Response $response){
   }
 });
 
+$app->post('/candidato/main/delete', function(Request $request, Response $response){
+  try {
+    $data = $resquest->getParsedBody();//espero que isso seja um comentário aasoha
+    $candidatoDAO = CandidatoDAO::getInstance();
+    delete($response);
+  } catch (DeleteException $e) {
+    return $response->withStatus(409);
+  }
+
+});
 //$app->halt(403, 'You shall not pass!');
 
 $app->run();

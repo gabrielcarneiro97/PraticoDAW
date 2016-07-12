@@ -34,7 +34,7 @@ class CandidatoDAO implements DefaultDAO{
         return $novoCandidato;
       }
     }
-    throw new validateException();
+    throw new ValidateException();
   }
 
 
@@ -127,18 +127,24 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão de deletar um usuário específico do sistema.
   */
   public function delete($object){
-    if ($_SESSION["candidatos"][$object->id]){
-      unset($_SESSION["candidatos"][$object->id]);
-      return true; //funcionou a exclusão
-    }
-    return false; //não rolou a exclusão pq o trem não existia!
+    $file = fopen("../private/userdata/userdata-".$object->id.".json", "r") or die("Candidato inexistente");
+    $jsonStr = fgets($file);
+    $candidato = json_decode($jsonStr);
+    unlink($file);
+    fclose($file);
   }
 
   /*
   *  Função padrão de deletar todos os usuários do sistema.
   */
   public function deleteAll() {
-    $_SESSION["candidatos"] = [];
+    $file = fopen("../private/logs/login.json", "w");
+    fclose($file);
+    for($i=0; $i<=getIdToUser()-1; $i++){
+      $file = fopen("../private/userdata/userdata-".$i.".json", "w");
+      unlink($file);
+      fclose($file);
+    }
   }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
