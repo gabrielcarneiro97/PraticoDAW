@@ -26,9 +26,18 @@ class CandidatoDAO implements DefaultDAO{
 
     $arrayLogins = json_decode($jsonStr, true);
 
+<<<<<<< HEAD
     for($i=0; $i <= $this->getIdToUser()-1; $i++)
       if($arrayLogins[$i]['login']==$login&&$arrayLogins[$i]['senha']==$senha)
         return $arrayLogins[$i]['id'];
+=======
+      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==crypt($senha, '_J9..rasm')){
+        $novoCandidato = new Candidato($arrayCandidato[0]);
+        $novoCandidato->setId($arrayCandidato[0]['id']);
+        return $novoCandidato;
+      }
+    }
+>>>>>>> e1415503a07e81388819885fbfdbc74043afbf9b
     throw new ValidateException();
   }
 
@@ -45,10 +54,9 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados de login dos usuários dentro do
   *  diretório src/private/logs/ no arquivo login.json.
   */
-  private function cadastra($id,$login,$senha){
-    $jsonToPrint = array( 'id'    => $id,
-                          'login' => $login,
-                          'senha' => $senha);
+  private function cadastra($login,$senha){
+    $jsonToPrint = array( 'login' => $login,
+                          'senha' => crypt($senha, '_J9..rasm'));
 
     $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
@@ -73,7 +81,7 @@ class CandidatoDAO implements DefaultDAO{
   private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
-                          'senha' => $senha,
+                          'senha' => crypt($senha, '_J9..rasm'),
                           'primeiroNome' => $pNome,
                           'sobreNome' => $sNome,
                           'tipoSexo' => $sex,
@@ -221,5 +229,11 @@ class CandidatoDAO implements DefaultDAO{
         $varCount++;
 
     return $varCount;
+  }
+  /*
+  * Função para validação do Email.
+  */
+  private function validateEmail($email){
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
   }
 }
