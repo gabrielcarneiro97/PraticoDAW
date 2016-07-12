@@ -28,7 +28,7 @@ class CandidatoDAO implements DefaultDAO{
 
       $arrayCandidato = json_decode($jsonStr, true);
 
-      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==$senha){
+      if($arrayCandidato[0]['login']==$login&&$arrayCandidato[0]['senha']==crypt($senha, '_J9..rasm')){
         $novoCandidato = new Candidato($arrayCandidato[0]);
         $novoCandidato->setId($arrayCandidato[0]['id']);
         return $novoCandidato;
@@ -52,7 +52,7 @@ class CandidatoDAO implements DefaultDAO{
   */
   private function cadastra($login,$senha){
     $jsonToPrint = array( 'login' => $login,
-                          'senha' => $senha);
+                          'senha' => crypt($senha, '_J9..rasm'));
 
     $oldFile = fopen('../private/logs/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
@@ -77,7 +77,7 @@ class CandidatoDAO implements DefaultDAO{
   private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
-                          'senha' => $senha,
+                          'senha' => crypt($senha, '_J9..rasm'),
                           'primeiroNome' => $pNome,
                           'sobreNome' => $sNome,
                           'tipoSexo' => $sex,
