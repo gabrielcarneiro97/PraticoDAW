@@ -141,12 +141,23 @@ class CandidatoDAO implements DefaultDAO{
   public function deleteAll() {
     $file = fopen("../private/logindata/login.json", "w");
     fclose($file);
-    for($i=0; $i<=Candidato::getIdToUser()-1; $i++){
-      $file = fopen("../private/userdata/userdata-".$i.".json", "w");
-      unlink($file);
-      fclose($file);
-    }
+    cleanDirectory("../private/userdata");
   }
+  /*
+  *   Função para limpar o diretório
+  */
+  public function cleanDirectory($directory)
+  {
+      foreach(glob("{$directory}/*") as $file)
+      {
+          if(is_dir($file)) {
+              recursiveRemoveDirectory($file);
+          } else {
+              unlink($file);
+          }
+      }
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
