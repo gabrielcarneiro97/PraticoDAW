@@ -52,20 +52,9 @@ class CandidatoDAO implements DefaultDAO{
                           'login' => $login,
                           'senha' => crypt($senha, 'jobFinder'));
 
-    $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
-    $jsonStr = "";
-
-    while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
-
-    fclose($oldFile);
-
-    json_encode($jsonToPrint);
-    $newJson = json_decode($jsonStr, true);
-    $newJson[] = $jsonToPrint;
-
-    $newFile = fopen('../private/logindata/login.json', "w") or die("Unable to open file!");
-    fwrite($newFile, json_encode($newJson));
-    fclose($newFile);
+    $file = fopen('../private/logindata/login.json', "a+") or die("Unable to open file!");
+    fwrite($file, json_encode($jsonToPrint));
+    fclose($file);
   }
 
   /*
@@ -85,12 +74,9 @@ class CandidatoDAO implements DefaultDAO{
                           'email' => $email
                           );
 
-    json_encode($jsonToPrint);
-    $newJson[] = $jsonToPrint;
-
-    $newFile = fopen('../private/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
-    fwrite($newFile, json_encode($newJson));
-    fclose($newFile);
+    $file = fopen('../private/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
+    fwrite($file, json_encode($jsonToPrint));
+    fclose($file);
   }
 
   /*
@@ -151,7 +137,8 @@ class CandidatoDAO implements DefaultDAO{
       foreach(glob("{$directory}/*") as $file)
       {
           if(is_dir($file)) {
-              recursiveRemoveDirectory($file);
+              cleanDirectory($file);
+              rmdir($file);
           } else {
               unlink($file);
           }
