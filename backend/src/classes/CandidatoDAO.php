@@ -99,6 +99,7 @@ class CandidatoDAO implements DefaultDAO{
   public function insert($array){
     $novoCandidato = new Candidato($array);
     $novoCandidato->setId($novoCandidato->getIdToUser());
+    $novoCandidato->incrementId();
     $this->cadastra($novoCandidato->getId(),
                     $novoCandidato->getLogin(),
                     $novoCandidato->getSenha());
@@ -140,7 +141,7 @@ class CandidatoDAO implements DefaultDAO{
   public function deleteAll() {
     $file = fopen("../private/logindata/login.json", "w");
     fclose($file);
-    for($i=0; $i<=getIdToUser()-1; $i++){
+    for($i=0; $i<=Candidato::getIdToUser()-1; $i++){
       $file = fopen("../private/userdata/userdata-".$i.".json", "w");
       unlink($file);
       fclose($file);

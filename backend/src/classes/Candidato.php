@@ -105,8 +105,10 @@ class Candidato{
     return $this->email;
   }
 //Incrementa e retorna o id para o usuário
-  public function getIdToUser(){
-    self::$idDistribuivel++;
+  public static function getIdToUser(){
     return self::$idDistribuivel;
+  }
+  public function incrementId(){
+    self::$idDistribuivel++;
   }
 }
