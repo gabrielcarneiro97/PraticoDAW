@@ -98,7 +98,7 @@ class CandidatoDAO implements DefaultDAO{
   */
   public function insert($array){
     $novoCandidato = new Candidato($array);
-    $novoCandidato->setId($this->getIdToUser());
+    $novoCandidato->setId($novoCandidato->getIdToUser());
     $this->cadastra($novoCandidato->getId(),
                     $novoCandidato->getLogin(),
                     $novoCandidato->getSenha());
@@ -188,7 +188,9 @@ class CandidatoDAO implements DefaultDAO{
     }
 
     $jsonStr = '';
-    while(!feof($file)) $jsonStr .= fgets($file);
+    while(!feof($file)){
+      $jsonStr .= fgets($file);
+    }
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
 
@@ -206,25 +208,6 @@ class CandidatoDAO implements DefaultDAO{
       $candidatos .= fgets($file);
     }
     return $candidatos;
-  }
-  /*
-  *  Função padrão que retorna a quantidade de usuários listados no login.json.
-  */
-  private function getIdToUser(){
-    $file = fopen('../private/logindata/login.json', "r") or die("Unable to proceed!");
-    $jsonStr = "";
-
-    while(!feof($file)) $jsonStr .= fgets($file);
-    fclose($file);
-    $jsonLogin = json_encode($jsonStr);
-
-    $varCount=0;
-
-    for ($i=0; $i<strlen($jsonLogin); $i++)
-      if($jsonLogin[$i]=='{')
-        $varCount++;
-
-    return $varCount;
   }
   /*
   * Função para validação do Email.

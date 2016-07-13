@@ -15,6 +15,7 @@ class Candidato{
   public $estado;
   public $pais;
   public $email;
+  public static $idDistribuivel = 0;
 
   /**
    *  Construtor que recebe um vetor com os atributos do candidato
@@ -102,5 +103,10 @@ class Candidato{
   }
   public function getEmail(){
     return $this->email;
+  }
+//Incrementa e retorna o id para o usuário
+  public function getIdToUser(){
+    self::$idDistribuivel++;
+    return self::$idDistribuivel;
   }
 }
