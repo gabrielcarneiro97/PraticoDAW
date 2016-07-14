@@ -217,7 +217,7 @@ class CandidatoDAO implements DefaultDAO{
   * Função que retorna a quantidade de Candidatos cadastrados
   */
   public function getNumberOfUsers(){
-    return Candidato::getIdToUser() - 1;
+    return Candidato::getIdToUser();
   }
   /*
   * Função para validação do Email.
