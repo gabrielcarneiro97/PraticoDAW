@@ -22,7 +22,9 @@ class CandidatoDAO implements DefaultDAO{
     $file = fopen("../private/logindata/login.json",'r');
     $jsonStr = '';
 
-    while(!feof($file)) $jsonStr .= fgets($file);
+    while(!feof($file)){
+        $jsonStr .= fgets($file);
+    }
 
     $arrayLogins = json_decode($jsonStr, true);
 
@@ -211,6 +213,12 @@ class CandidatoDAO implements DefaultDAO{
       $candidatos .= fgets($file);
     }
     return $candidatos;
+  }
+  /*
+  * Função que retorna a quantidade de Candidatos cadastrados
+  */
+  public function getNumberOfUsers(){
+    
   }
   /*
   * Função para validação do Email.
