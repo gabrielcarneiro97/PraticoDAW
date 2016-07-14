@@ -91,7 +91,6 @@ class CandidatoDAO implements DefaultDAO{
   public function insert($array){
     $novoCandidato = new Candidato($array);
     $novoCandidato->setId(Candidato::getIdToUser());
-    Candidato::incrementId();
     $this->cadastra($novoCandidato->getId(),
                     $novoCandidato->getLogin(),
                     $novoCandidato->getSenha());

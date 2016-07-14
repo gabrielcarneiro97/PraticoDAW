@@ -110,7 +110,7 @@ class Candidato{
     while(!feof($file)) $jsonStr .= fgets($file);
     $arrayLogins = json_decode($jsonStr, true);
     $count=0;
-    for($i=0; $i < strlen($arrayLogins)-1; $i++) $count++;
+    for($i=0; $i <= strlen($arrayLogins)-1; $i++) $count++;
     return $arrayLogins[$count]['id']+1;
   }
 }
