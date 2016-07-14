@@ -81,8 +81,7 @@ $app->post('/candidato/main', function(Request $request, Response $response){
     $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
     $candidatoDAO = CandidatoDAO::getInstance();
     $novoCandidatoID = $candidatoDAO->validate($data['login'],$data['senha']);
-    $novoCandidato = $candidatoDAO->getById($novoCandidatoID);
-    return $response->withJson($novoCandidato);
+    return $response->withStatus(202);
   }catch(ValidateException $e){
     return $response->withStatus(403);
   }

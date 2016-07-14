@@ -1,2 +1,3 @@
 #Retirando cache dos usuários
-/backend/src/private
+/src/private
+/src/vendor
