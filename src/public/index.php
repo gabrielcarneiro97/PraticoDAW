@@ -80,19 +80,23 @@ $app->post('/candidato/main', function(Request $request, Response $response){
   try{
     $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
     $candidatoDAO = CandidatoDAO::getInstance();
-    $novoCandidatoID = $candidatoDAO->validate($data['login'],$data['senha']);
+    $candidatoDAO->validate($data['login'],$data['senha']);
     return $response->withStatus(202);
   }catch(ValidateException $e){
     return $response->withStatus(403);
   }
 });
 
-$app->post('/candidato/main/delete', function(Request $request, Response $response){
-  try {
+/**
+ * Rota para a exclusão de um candidato específico
+ *
+**/
+$app->post('/candidato/delete', function(Request $request, Response $response){
+  try{
     $data = $resquest->getParsedBody();//espero que isso seja um comentário aasoha
     $candidatoDAO = CandidatoDAO::getInstance();
     delete($response);
-  } catch (DeleteException $e) {
+  }catch(DeleteException $e){
     return $response->withStatus(409);
   }
 

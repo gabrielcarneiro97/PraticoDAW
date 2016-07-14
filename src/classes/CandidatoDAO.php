@@ -28,9 +28,13 @@ class CandidatoDAO implements DefaultDAO{
 
     for($i=0; $i <= $this->getIdToUser()-1; $i++){
       if($arrayLogins[$i]['login'] == $login && $arrayLogins[$i]['senha'] == crypt($senha, 'jobFinder')){
-        return $arrayLogins[$i]['id'];
+        if(!isset($_SESSION['candidato'])){
+          session_start();
+        }
+        $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
       }
     }
+    session_destroy();
     throw new ValidateException();
   }
 
