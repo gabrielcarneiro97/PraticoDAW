@@ -103,14 +103,4 @@ class Candidato{
   public function getEmail(){
     return $this->email;
   }
-//Incrementa e retorna o id para o usuário
-  public static function getIdToUser(){
-    $file = fopen("../private/logindata/login.json",'r');
-    $jsonStr = '';
-    while(!feof($file)) $jsonStr .= fgets($file);
-    $arrayLogins = json_decode($jsonStr, true);
-    $count=0;
-    for($i=0; $i <= strlen($arrayLogins)-1; $i++) $count++;
-    return $arrayLogins[$count]['id']+1;
-  }
 }

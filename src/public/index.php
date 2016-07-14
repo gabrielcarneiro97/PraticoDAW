@@ -60,7 +60,6 @@ $app->get('/login', function (Request $request, Response $response){
         </form>
         ";
 });
-
 /**
  * Rota para a persistência de um novo candidato
  *

@@ -1,0 +1,37 @@
+{
+	"id": "ccc1a2b1-e670-31ed-3b7f-1597f3764276",
+	"name": "PraticoDAW",
+	"description": "",
+	"order": [
+		"4da4df21-82da-30e6-0667-eb289f969e70"
+	],
+	"folders": [],
+	"timestamp": 1468520924707,
+	"owner": "479599",
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "4da4df21-82da-30e6-0667-eb289f969e70",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://10.0.0.12:8000/candidato/main",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "ccc1a2b1-e670-31ed-3b7f-1597f3764276",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://10.0.0.12:8000/candidato/main",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1468520924707,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\"login\": \"a\", \"senha\": \"123456\"}"
+		}
+	]
+}

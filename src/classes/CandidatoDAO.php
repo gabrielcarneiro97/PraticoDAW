@@ -28,7 +28,9 @@ class CandidatoDAO implements DefaultDAO{
 
     $arrayLogins = json_decode($jsonStr, true);
 
-    for($i=0; $i <= $this->getNumberOfUsers(); $i++){
+    for($i=0; $i < $this->getIdToUser()-1; $i++){
+      echo "<br><br>Posição:".$i." >> [login] = ".$arrayLogins[$i]['login']." == ".$login;
+      echo "<br>Posição:".$i." >> [senha] = ".$arrayLogins[$i]['senha']." == ".crypt($senha, 'jobFinder').'<br><br>';
       if($arrayLogins[$i]['login'] == $login && $arrayLogins[$i]['senha'] == crypt($senha, 'jobFinder')){
         if(!isset($_SESSION['candidato'])){
           session_start();
@@ -55,12 +57,23 @@ class CandidatoDAO implements DefaultDAO{
   */
   private function cadastra($id,$login,$senha){
     $jsonToPrint = array( 'id' => $id,
-                          'login' => $login,
-                          'senha' => crypt($senha, 'jobFinder'));
+                              'login' => $login,
+                              'senha' => crypt($senha, 'jobFinder'));
 
-    $file = fopen('../private/logindata/login.json', "a+") or die("Unable to open file!");
-    fwrite($file, json_encode($jsonToPrint));
-    fclose($file);
+    $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
+    $jsonStr = "";
+
+    while(!feof($oldFile)) $jsonStr .= fgets($oldFile);
+
+    fclose($oldFile);
+
+    json_encode($jsonToPrint);
+    $newJson = json_decode($jsonStr, true);
+    $newJson[] = $jsonToPrint;
+
+    $newFile = fopen('../private/logindata/login.json', "w") or die("Unable to open file!");
+    fwrite($newFile, json_encode($newJson));
+    fclose($newFile);
   }
 
   /*
@@ -90,7 +103,7 @@ class CandidatoDAO implements DefaultDAO{
   */
   public function insert($array){
     $novoCandidato = new Candidato($array);
-    $novoCandidato->setId(Candidato::getIdToUser());
+    $novoCandidato->setId($this->getIdToUser());
     $this->cadastra($novoCandidato->getId(),
                     $novoCandidato->getLogin(),
                     $novoCandidato->getSenha());
@@ -215,9 +228,20 @@ class CandidatoDAO implements DefaultDAO{
   /*
   * Função que retorna a quantidade de Candidatos cadastrados
   */
-  public function getNumberOfUsers(){
-    return Candidato::getIdToUser();
+  public function getIdToUser(){
+    $file = fopen("../private/logindata/login.json",'r');
+    $jsonStr = '';
+
+    while(!feof($file)) $jsonStr = fgets($file);
+    fclose($file);
+
+    $arrayLogins = json_decode($jsonStr, true);
+    $count=0;
+    for($i=0; $arrayLogins[$i]!=null; $i++) $count++;
+
+    return $arrayLogins[$count-1]['id']+1;
   }
+
   /*
   * Função para validação do Email.
   */
