@@ -15,7 +15,6 @@ class Candidato{
   public $estado;
   public $pais;
   public $email;
-  public static $idDistribuivel = 0;
 
   /**
    *  Construtor que recebe um vetor com os atributos do candidato
@@ -109,6 +108,12 @@ class Candidato{
     return self::$idDistribuivel;
   }
   public function incrementId(){
-    self::$idDistribuivel++;
+    $file = fopen("../private/logindata/login.json",'r');
+    $jsonStr = '';
+    while(!feof($file)) $jsonStr .= fgets($file);
+    $arrayLogins = json_decode($jsonStr, true);
+    $count=0;
+    for($i=0; $i < strlen($arrayLogins)-1; $i++) $count++;
+    return $arrayLogins[$count]['id']+1;
   }
 }
