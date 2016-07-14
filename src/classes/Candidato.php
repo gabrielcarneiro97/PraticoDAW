@@ -105,9 +105,6 @@ class Candidato{
   }
 //Incrementa e retorna o id para o usuário
   public static function getIdToUser(){
-    return self::$idDistribuivel;
-  }
-  public function incrementId(){
     $file = fopen("../private/logindata/login.json",'r');
     $jsonStr = '';
     while(!feof($file)) $jsonStr .= fgets($file);
