@@ -28,7 +28,7 @@ class CandidatoDAO implements DefaultDAO{
 
     $arrayLogins = json_decode($jsonStr, true);
 
-    for($i=0; $i <= $this->getIdToUser()-1; $i++){
+    for($i=0; $i <= $this->getNumberOfUsers(); $i++){
       if($arrayLogins[$i]['login'] == $login && $arrayLogins[$i]['senha'] == crypt($senha, 'jobFinder')){
         if(!isset($_SESSION['candidato'])){
           session_start();
@@ -90,8 +90,8 @@ class CandidatoDAO implements DefaultDAO{
   */
   public function insert($array){
     $novoCandidato = new Candidato($array);
-    $novoCandidato->setId($novoCandidato->getIdToUser());
-    $novoCandidato->incrementId();
+    $novoCandidato->setId(Candidato::getIdToUser());
+    Candidato::incrementId();
     $this->cadastra($novoCandidato->getId(),
                     $novoCandidato->getLogin(),
                     $novoCandidato->getSenha());
@@ -217,7 +217,7 @@ class CandidatoDAO implements DefaultDAO{
   * Função que retorna a quantidade de Candidatos cadastrados
   */
   public function getNumberOfUsers(){
-    
+    return Candidato::getIdToUser() - 1;
   }
   /*
   * Função para validação do Email.
