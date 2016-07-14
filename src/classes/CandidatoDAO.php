@@ -29,20 +29,32 @@ class CandidatoDAO implements DefaultDAO{
     $arrayLogins = json_decode($jsonStr, true);
 
     for($i=0; $i < $this->getIdToUser()-1; $i++){
-      echo "<br><br>Posição:".$i." >> [login] = ".$arrayLogins[$i]['login']." == ".$login;
-      echo "<br>Posição:".$i." >> [senha] = ".$arrayLogins[$i]['senha']." == ".crypt($senha, 'jobFinder').'<br><br>';
-      if($arrayLogins[$i]['login'] == $login && $arrayLogins[$i]['senha'] == crypt($senha, 'jobFinder')){
-        if(!isset($_SESSION['candidato'])){
+      if($arrayLogins[$i]['login'] == $login)
+        if($arrayLogins[$i]['senha'] == $senha){
           session_start();
+          $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
         }
-        $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
-      }
     }
-    session_destroy();
+    if(!isset($_SESSION['candidato'])){
     throw new ValidateException();
+    }
   }
 
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//--************************************************************************--//
+//--****************Inicio dos métodos de logout do usuário******************--//
+//--************************************************************************--//
+  public function logout(){
+    session_start();
+    if(isset($_SESSION))
+      session_destroy();
+    else
+      throw new LogoutException();
+  }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,8 +69,8 @@ class CandidatoDAO implements DefaultDAO{
   */
   private function cadastra($id,$login,$senha){
     $jsonToPrint = array( 'id' => $id,
-                              'login' => $login,
-                              'senha' => crypt($senha, 'jobFinder'));
+                          'login' => $login,
+                          'senha' => $senha);
 
     $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
@@ -83,7 +95,7 @@ class CandidatoDAO implements DefaultDAO{
   private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
-                          'senha' => crypt($senha, 'jobFinder'),
+                          'senha' => $senha,
                           'primeiroNome' => $pNome,
                           'sobreNome' => $sNome,
                           'tipoSexo' => $sex,
@@ -241,6 +253,18 @@ class CandidatoDAO implements DefaultDAO{
 
     return $arrayLogins[$count-1]['id']+1;
   }
+
+  /*
+  * Função para da sessão.
+  */
+  public function isTheSessionSet(){
+    session_start();
+    if(!isset($_SESSION['candidato']))
+      throw new SessionIsUnsetException();
+    else
+      return true;
+  }
+
 
   /*
   * Função para validação do Email.

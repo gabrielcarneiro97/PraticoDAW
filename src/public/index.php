@@ -72,7 +72,7 @@ $app->post('/cadastro', function (Request $request, Response $response){
 });
 
 /**
- * Rota para o login de um novo candidato
+ * Rota para o login de um candidato
  *
 **/
 $app->post('/candidato/main', function(Request $request, Response $response){
@@ -80,6 +80,46 @@ $app->post('/candidato/main', function(Request $request, Response $response){
     $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
     $candidatoDAO = CandidatoDAO::getInstance();
     $candidatoDAO->validate($data['login'],$data['senha']);
+    return $response->withStatus(202);
+  }catch(ValidateException $e){
+    return $response->withStatus(403);
+  }
+});
+
+/**
+ * Rota para o logout de um candidato
+ *
+**/
+$app->get('/candidato/logout', function(Request $request, Response $response){
+  try{
+    $candidatoDAO = CandidatoDAO::getInstance();
+    $candidatoDAO->logout();
+    return $response->withStatus(204);
+  }catch(LogoutException $e){
+    return $response->withStatus(400);
+  }
+});
+
+/**
+ * Rota para o validação da sessão de um candidato
+ *
+**/
+$app->get('/candidato/session', function(Request $request, Response $response){
+  try{
+    $candidatoDAO = CandidatoDAO::getInstance();
+    $candidatoDAO->isTheSessionSet();
+    return $response->withStatus(418);
+  }catch(SessionIsUnsetException $e){
+    return $response->withStatus(203);
+  }
+});
+
+/**
+ * Rota para o retorno das informações de um candidato
+ *
+**/
+$app->post('/candidato/getinfo', function(Request $request, Response $response){
+  try{
     return $response->withStatus(202);
   }catch(ValidateException $e){
     return $response->withStatus(403);
