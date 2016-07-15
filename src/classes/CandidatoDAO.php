@@ -129,7 +129,6 @@ class CandidatoDAO implements DefaultDAO{
                       $novoCandidato->getId(),
                       $novoCandidato->getEmail()
                     );
-    $msg = "Bem-vindo ao JobFinder!";
     return $novoCandidato;
   }
 ////////////////////////////////////////////////////////////////////////////////
@@ -265,13 +264,5 @@ class CandidatoDAO implements DefaultDAO{
     }
     else
       return true;
-  }
-
-
-  /*
-  * Função para validação do Email.
-  */
-  private function validateEmail($email){
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
   }
 }

@@ -50,20 +50,6 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
 });
 
 /**
- * Rota para testes
- *
-**/
-$app->get('/login', function (Request $request, Response $response){
-  echo "<form action='/candidato/main' method='post'>
-          Login:
-          <input type='text' name='login'><br>
-          Senha:
-          <input type='password' name='senha'><br>
-          <input type='submit' value='entrar'>
-        </form>
-        ";
-});
-/**
  * Rota para a persistência de um novo candidato
  *
 **/
@@ -129,6 +115,50 @@ $app->get('/candidato/getinfo', function(Request $request, Response $response){
     return $response->withJson($novoCandidato)->withStatus(200);
   }catch(GetInfoException $e){
     return $response->withStatus(403);
+  }
+});
+
+/**
+ * Rota para o upload de imagens para o perfil do candidato
+ *
+**/
+$app->get('/teste', function(Request $request, Response $response){
+  echo "
+      <form method='post' enctype='multipart/form-data' action='/candidato/uploadimg'>
+         Selecione uma imagem: <input name='arquivo' type='file' />
+  	   <br />
+         <input type='submit' value='Salvar' />
+      </form>";
+});
+
+/**
+ * Rota para o upload de imagens para o perfil do candidato
+ *
+**/
+$app->post('/candidato/uploadimg', function(Request $request, Response $response){
+  try{
+    session_start();
+    if(isset($_FILES['arquivo']['name']) && $_FILES["arquivo"]["error"] == 0){
+
+    	$nome = $_FILES['arquivo']['name'];
+    	$extensao = strrchr($nome, '.');
+    	$extensao = strtolower($extensao);
+
+    	if(strstr('.jpg;.jpeg;.gif;.png', $extensao)){
+    		$novoNome = $_SESSION['candidato']['id'].$extensao;
+
+    		if(@move_uploaded_file($_FILES['arquivo']['tmp_name'],'../private/userdata/imgs/'.$novoNome))
+    			return 0;
+    		else
+    			throw new UploadImgException();
+    	}
+    	else
+    		throw new UploadImgException();
+    }else
+    	throw new UploadImgException();
+    return $response->withStatus(201);
+  }catch(UploadImgException $e){
+    return $response->withStatus(203);
   }
 });
 
