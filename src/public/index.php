@@ -10,12 +10,15 @@ spl_autoload_register(function ($classname){
 });
 
 $app = new \Slim\App;
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT");
+header("Access-Control-Allow-Origin: http://localhost:4200");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
+//session_start();
+//session_regenerate_id(true);
 
 /**
  * ---------------------------------------------------------------------------
@@ -108,7 +111,7 @@ $app->get('/candidato/session', function(Request $request, Response $response){
   try{
     $candidatoDAO = CandidatoDAO::getInstance();
     $candidatoDAO->isTheSessionSet();
-    return $response->withStatus(418);
+    return $response->withStatus(202);
   }catch(SessionIsUnsetException $e){
     return $response->withStatus(203);
   }
@@ -118,10 +121,13 @@ $app->get('/candidato/session', function(Request $request, Response $response){
  * Rota para o retorno das informações de um candidato
  *
 **/
-$app->post('/candidato/getinfo', function(Request $request, Response $response){
+$app->get('/candidato/getinfo', function(Request $request, Response $response){
   try{
-    return $response->withStatus(202);
-  }catch(ValidateException $e){
+    session_start();
+    $candidatoDAO = CandidatoDAO::getInstance();
+    $novoCandidato = $candidatoDAO->getById($_SESSION['candidato']['id']);
+    return $response->withJson($novoCandidato)->withStatus(200);
+  }catch(GetInfoException $e){
     return $response->withStatus(403);
   }
 });
@@ -140,6 +146,5 @@ $app->post('/candidato/delete', function(Request $request, Response $response){
   }
 
 });
-//$app->halt(403, 'You shall not pass!');
 
 $app->run();

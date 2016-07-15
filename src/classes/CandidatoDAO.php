@@ -27,17 +27,16 @@ class CandidatoDAO implements DefaultDAO{
     }
 
     $arrayLogins = json_decode($jsonStr, true);
-
-    for($i=0; $i < $this->getIdToUser()-1; $i++){
-      if($arrayLogins[$i]['login'] == $login)
-        if($arrayLogins[$i]['senha'] == $senha){
-          session_start();
-          $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
-        }
-    }
-    if(!isset($_SESSION['candidato'])){
-    throw new ValidateException();
-    }
+    session_start();
+    if(!isset($_SESSION['candidato']))
+      for($i=0; $i < $this->getIdToUser()-1; $i++){
+        if($arrayLogins[$i]['login'] == $login)
+          if($arrayLogins[$i]['senha'] == $senha){
+            $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
+          }
+      }
+    if(!isset($_SESSION['candidato']))
+      throw new ValidateException();
   }
 
 
@@ -50,7 +49,7 @@ class CandidatoDAO implements DefaultDAO{
 //--************************************************************************--//
   public function logout(){
     session_start();
-    if(isset($_SESSION))
+    if(isset($_SESSION['candidato']))
       session_destroy();
     else
       throw new LogoutException();
@@ -129,7 +128,8 @@ class CandidatoDAO implements DefaultDAO{
                       $novoCandidato->getPais(),
                       $novoCandidato->getId(),
                       $novoCandidato->getEmail()
-                      );
+                    );
+    $msg = "Bem-vindo ao JobFinder!";
     return $novoCandidato;
   }
 ////////////////////////////////////////////////////////////////////////////////
@@ -221,9 +221,8 @@ class CandidatoDAO implements DefaultDAO{
     }
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
-
-    $novoCandidato = new Candidato($arrayCandidato[0]);
-    $novoCandidato->setId($arrayCandidato[0]['id']);
+    $novoCandidato = new Candidato($arrayCandidato);
+    $novoCandidato->setId($arrayCandidato['id']);
     return $novoCandidato;
   }
 
@@ -255,12 +254,15 @@ class CandidatoDAO implements DefaultDAO{
   }
 
   /*
-  * Função para da sessão.
+  * Função para validação da sessão.
   */
   public function isTheSessionSet(){
     session_start();
-    if(!isset($_SESSION['candidato']))
+    if(!isset($_SESSION['candidato'])){
+      session_regenerate_id();
+      session_destroy();
       throw new SessionIsUnsetException();
+    }
     else
       return true;
   }
