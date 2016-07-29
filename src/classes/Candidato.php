@@ -5,15 +5,32 @@
  */
 class Candidato{
 
-  public $id; //para a pesquisa nos arquivos
-  public $login; // para o acesso dos usuários funcionários no sistema
-  public $senha; // para o acesso dos usuários funcionários no sistema
+  // para a pesquisa nos arquivos de persistência
+  public $id;
+
+  // para o acesso dos usuários funcionários no sistema
+  public $login;
+  public $senha;
+
+  // para identificação do usuário
   public $primeiroNome;
   public $sobreNome;
+  public $CPF;
+  public $RG;
   public $tipoSexo;
+
+  // para localização geografica do usuário
   public $cidade;
   public $estado;
   public $pais;
+  public $CEP;
+  public $logradouro;
+  public $numeroResidencia;
+  public $complementoLocalidade;
+
+  // para o contato com o usuário
+  public $numCelular;
+  public $numTelFixo;
   public $email;
 
   /**
