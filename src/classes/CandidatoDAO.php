@@ -142,12 +142,29 @@ class CandidatoDAO implements DefaultDAO{
   /*
   *  Função padrão de deletar um usuário específico do sistema.
   */
-  public function delete($object){
-    $file = fopen("../private/userdata/userdata-".$object->id.".json", "r") or die("Candidato inexistente");
+  public function delete($candidato){
+    $file = fopen("../private/logindata/login.json",'r');
     $jsonStr = fgets($file);
-    $candidato = json_decode($jsonStr);
-    unlink($file);
     fclose($file);
+    $velhoArrayLogins = json_decode($jsonStr, true);
+    $novoArrayLogins = [];
+    $count=0;
+    for($i=0;$velhoArrayLogins[$i]!=null;$i++){
+      if($velhoArrayLogins[$i]['id']!=$candidato->getId())
+        $novoArrayLogins[] = $velhoArrayLogins[$i];
+      else
+        $count++;
+    }
+    $file = fopen("../private/logindata/login.json",'w');
+    fwrite($file, json_encode($novoArrayLogins));
+    fclose($file);
+
+    if($count==0)
+      throw new DeleteException('Impossível encontrar usuário na lista de logins!');
+    if(!file_exists("../private/userdata/userdata-".$candidato->getId().".json"))
+      throw new DeleteException();
+
+    unlink("../private/userdata/userdata-".$candidato->getId().".json");
   }
 
   /*
@@ -208,22 +225,37 @@ class CandidatoDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getById($id){
-    try {
+    if(file_exists("../private/userdata/userdata-".$id.".json"))
       $file = fopen("../private/userdata/userdata-".$id.'.json','r');
-    }catch(Exception $e){
-      return 0;
-    }
+    else
+      throw new GetUserByLoginException();
 
-    $jsonStr = '';
-    while(!feof($file)){
-      $jsonStr .= fgets($file);
-    }
+    $jsonStr = fgets($file);
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
+    var_dump($arrayCandidato);
     $novoCandidato = new Candidato($arrayCandidato);
     $novoCandidato->setId($arrayCandidato['id']);
     return $novoCandidato;
   }
+
+  /*
+  *  Função padrão que retorna um usuário em específico
+  *  caçando pelo id dele no sistema.
+  */
+  public function getByLogin($login){
+    $file = fopen("../private/logindata/login.json",'r');
+    $jsonStr = fgets($file);
+    fclose($file);
+    $arrayLogins = json_decode($jsonStr, true);
+    for($i=0;$arrayLogins[$i]!=null;$i++){
+      echo $arrayLogins[$i]['login']."------".$login.">>id: ".($i+1)."<br>";
+      if($arrayLogins[$i]['login']==$login)
+        return $this->getById($i+1);
+    }
+    throw new GetUserByLoginException();
+  }
+
 
   /*
   *  Função padrão que retorna todos os usuário do sistema.

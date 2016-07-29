@@ -168,9 +168,15 @@ $app->post('/candidato/uploadimg', function(Request $request, Response $response
 **/
 $app->post('/candidato/delete', function(Request $request, Response $response){
   try{
-    $data = $resquest->getParsedBody();//espero que isso seja um comentário aasoha
+    $data = $request->getParsedBody();
     $candidatoDAO = CandidatoDAO::getInstance();
-    delete($response);
+    try{
+      $candidato = $candidatoDAO->getByLogin($data['login']);
+    }catch(GetUserByLoginException $e){
+      return $response->withStatus(404);
+    }
+    $candidatoDAO->delete($candidato);
+    return $response->withStatus(204);
   }catch(DeleteException $e){
     return $response->withStatus(409);
   }
