@@ -45,7 +45,6 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
   $id = $args['idCandidato'];
   $candidatoDAO = CandidatoDAO::getInstance();
   $candidato = $candidatoDAO->getById($id);
-
   return $response->withJson($candidato);
 });
 
@@ -56,7 +55,11 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
 $app->post('/cadastro', function (Request $request, Response $response){
   $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
   $candidatoDAO = CandidatoDAO::getInstance();
-  $novoCandidato = $candidatoDAO->insert($data);
+  try{
+    $novoCandidato = $candidatoDAO->insert($data);
+  }catch(Exception $e){
+    return $response->withStatus(406);
+  }
   return $response->withJson($novoCandidato);
 });
 
