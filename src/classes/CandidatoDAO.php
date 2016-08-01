@@ -102,7 +102,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função que faz a persistência dos dados do usuário
   *  no diretório src\private\userdata com o nome userdata-{id do usuário}.json
   */
-  private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email){
+  private function insertData($login,$senha,$pNome,$sNome,$sex,$cidade,$estado,$pais,$id,$email,$CPF,$RG,$CEP,$logradouro,$numeroResidencia,$complementoLocalidade,$numCelular,$numTelFixo){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
                           'senha' => $senha,
@@ -112,7 +112,15 @@ class CandidatoDAO implements DefaultDAO{
                           'cidade' => $cidade,
                           'estado' => $estado,
                           'pais' => $pais,
-                          'email' => $email
+                          'email' => $email,
+                          'CPF' => $CPF,
+                          'RG' => $RG,
+                          'CEP' => $CEP,
+                          'logradouro' => $logradouro,
+                          'numeroResidencia' => $numeroResidencia,
+                          'complementoLocalidade' => $complementoLocalidade,
+                          'numCelular' => $numCelular,
+                          'numTelFixo' => $numTelFixo
                           );
 
     $file = fopen('../private/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
@@ -142,7 +150,15 @@ class CandidatoDAO implements DefaultDAO{
                       $novoCandidato->getEstado(),
                       $novoCandidato->getPais(),
                       $novoCandidato->getId(),
-                      $novoCandidato->getEmail()
+                      $novoCandidato->getEmail(),
+                      $novoCandidato->getCPF(),
+                      $novoCandidato->getRG(),
+                      $novoCandidato->getCEP(),
+                      $novoCandidato->getLogradouro(),
+                      $novoCandidato->getNumeroResidencia(),
+                      $novoCandidato->getComplementoLocalidade(),
+                      $novoCandidato->getNumCelular(),
+                      $novoCandidato->getNumTelFixo()
                     );
     return $novoCandidato;
   }
@@ -248,7 +264,6 @@ class CandidatoDAO implements DefaultDAO{
     $jsonStr = fgets($file);
     fclose($file);
     $arrayCandidato = json_decode($jsonStr, true);
-    var_dump($arrayCandidato);
     $novoCandidato = new Candidato($arrayCandidato);
     $novoCandidato->setId($arrayCandidato['id']);
     return $novoCandidato;
@@ -309,5 +324,22 @@ class CandidatoDAO implements DefaultDAO{
     }
     else
       return true;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//--************************************************************************--//
+//--***************************Currículo Online*****************************--//
+//--************************************************************************--//
+
+  public function fillCurriculum($id, $array){
+    $file = fopen("../private/userdata/curriculum-".$id.".json");
+    $candidato = getById($id);
+    $jsonToPrint = array( 'vagas' => $array['vagas'],
+                          'experiencias' => $array['experiencias'],
+                          'cursosExtracurriculares' => $array['cursosExtracurriculares'],
+                          'escolaridade' => $array['escolaridade']);
   }
 }

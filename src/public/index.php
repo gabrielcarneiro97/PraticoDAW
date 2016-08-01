@@ -57,7 +57,7 @@ $app->post('/cadastro', function (Request $request, Response $response){
   $candidatoDAO = CandidatoDAO::getInstance();
   try{
     $novoCandidato = $candidatoDAO->insert($data);
-  }catch(Exception $e){
+  }catch(InsertionException $e){
     return $response->withStatus(406);
   }
   return $response->withJson($novoCandidato);

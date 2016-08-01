@@ -48,6 +48,14 @@ class Candidato{
     $this->estado = $data['estado'];
     $this->pais = $data['pais'];
     $this->email = $data['email'];
+    $this->CPF = $data['CPF'];
+    $this->RG = $data['RG'];
+    $this->CEP = $data['CEP'];
+    $this->logradouro = $data['logradouro'];
+    $this->numeroResidencia = $data['numeroResidencia'];
+    $this->complementoLocalidade = $data['complementoLocalidade'];
+    $this->numCelular = $data['numCelular'];
+    $this->numTelFixo = $data['numTelFixo'];
   }
 
 
@@ -113,11 +121,42 @@ class Candidato{
   public function setPais($newPais){
       $this->pais = $newPais;
   }
-//Getters $ Setters para email
+//Getters & Setters para email
   public function setEmail($newEmail){
     $this->email = $newEmail;
   }
   public function getEmail(){
     return $this->email;
+  }
+//Getters & Setters para CPF e RG
+  public function getCPF(){
+    return $this->CPF;
+  }
+  public function getRG(){
+    return $this->RG;
+  }
+//Getters & Setters para CEP
+  public function getCEP(){
+    return $this->CEP;
+  }
+//Getters & Setters para logradouro
+  public function getLogradouro(){
+    return $this->logradouro;
+  }
+//Getters & Setters para numeroResidencia
+  public function getNumeroResidencia(){
+    return $this->numeroResidencia;
+  }
+//Getters & Setters para localidade
+  public function getComplementoLocalidade(){
+    return $this->complementoLocalidade;
+  }
+//Getters & Setters para número de celular
+  public function getNumCelular(){
+    return $this->numCelular;
+  }
+//Getters & Setters para número de telefone fixo
+  public function getNumTelFixo(){
+    return $this->numTelFixo;
   }
 }
