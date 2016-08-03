@@ -254,7 +254,7 @@ $app->post('/candidato/cadastraCurriculo', function(Request $request, Response $
     $candidatoDAO = CandidatoDAO::getInstance();
     $candidatoDAO->fillCurriculum($data);
   } catch (CurriculumException $e) {
-
+    return $response->withStatus(420);
   }
 
 });
@@ -274,7 +274,7 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
     $curriculum = $candidato->getCurriculum();
     return $response->withJson($curriculum)->withStatus(200);
   } catch (CurriculumException $e){
-
+    return $response->withStatus(420);
   }
 });
 $app->run();
