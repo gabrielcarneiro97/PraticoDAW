@@ -128,7 +128,7 @@ $app->get('/candidato/getinfo', function(Request $request, Response $response){
 $app->get('/teste', function(Request $request, Response $response){
   echo "
       <form method='post' enctype='multipart/form-data' action='/candidato/uploadimg'>
-         Selecione uma imagem: <input name='arquivo' type='file' />
+         Selecione um arquivo: <input name='arquivo' type='file' />
   	   <br />
          <input type='submit' value='Salvar' />
       </form>";
@@ -183,7 +183,38 @@ $app->post('/candidato/delete', function(Request $request, Response $response){
   }catch(DeleteException $e){
     return $response->withStatus(409);
   }
+});
+/**
+  * Rota para retornar currículo
+  *
+**/
+$app->post('/candidato/cadastraCurriculo', function(Request $request, Response $response){
+  try {
+    $data = $request->getParsedBody();
+    $candidatoDAO = CandidatoDAO::getInstance();
+    $candidatoDAO->fillCurriculum($data);
+  } catch (CurriculumException $e) {
+
+  }
 
 });
+/**
+  * Rota para retornar currículo
+  *
+**/
+$app->get('/candidato/curriculo', function(Request $resquest, Response $response){
+  try{
+    $data = $request->getParsedBody();
+    $candidatoDAO = CandidatoDAO::getInstance();
+    try {
+      $candidato = $candidatoDAO->getById($data['id']);
+    } catch (GetUserByIdException $e) {
+      return $response->withStatus(404);
+    }
+    $curriculum = $candidato->getCurriculum();
+    return $response->withJson($curriculum)->withStatus(200);
+  } catch (CurriculumException $e){
 
+  }
+});
 $app->run();

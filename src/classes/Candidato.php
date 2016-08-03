@@ -159,4 +159,15 @@ class Candidato{
   public function getNumTelFixo(){
     return $this->numTelFixo;
   }
+//Getters & Setters para curriculo
+  public function getCurriculum(){
+    try {
+        $file = fopen("../private/userdata/curriculum-".$this->id.".json", "r");
+    } catch (Exception $e) {
+        throw new CurriculumException();
+    }
+    $jsonStr = fgets($file);
+    $curriculum = json_decode($jsonStr, true);
+    return $curriculum;
+  }
 }

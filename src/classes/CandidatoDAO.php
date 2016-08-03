@@ -334,20 +334,14 @@ class CandidatoDAO implements DefaultDAO{
 //--***************************Currículo Online*****************************--//
 //--************************************************************************--//
 
-  public function fillCurriculum($id, $array){
-    $file = fopen("../private/userdata/curriculum-".$id.".json", "w");
-    $candidato = getById($id);
+  public function fillCurriculum($array){
+    $file = fopen("../private/userdata/curriculum-".$array['candidato']->id.".json", "w");
+    $candidato = getById($array['candidato']->id);
     $jsonToPrint = array( 'vagas' => $array['vagas'],
                           'experiencias' => $array['experiencias'],
                           'cursosExtracurriculares' => $array['cursosExtracurriculares'],
                           'escolaridade' => $array['escolaridade']);
     fwrite($file, json_encode($jsonToPrint));
     fclose($file);
-  }
-  public function getCurriculum($id){
-    $file = fopen("../private/userdata/curriculum-".$id.".json", "r");
-    $jsonStr = fgets($file);
-    $curriculum = json_decode($jsonStr, true);
-    return $curriculum;
   }
 }
