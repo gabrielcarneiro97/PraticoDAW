@@ -1,6 +1,6 @@
 <?php
-class DeleteException extends Exception{
-    public function __construct($message = "Usuário ou Empresa inexistente.", $code = 409, Exception $previous = null){
+class AlreadyExistsCompanyException extends Exception{
+    public function __construct($message = "This company already exists in the persistence file!", $code = 406, Exception $previous = null){
         parent::__construct($message, $code, $previous);
     }
     // personaliza a apresentação do objeto como string

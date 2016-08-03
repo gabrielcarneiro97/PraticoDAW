@@ -27,18 +27,24 @@ header("Pragma: no-cache");
  */
 
  /**
-  * Rota para recuperar todos os candidatos
+  * Rotas para recuperar todos os candidatos e empresas
   */
 $app->get('/candidatos', function (Request $request, Response $response){
   $candidatoDAO = CandidatoDAO::getInstance();
-  $candidato = array_values($candidatoDAO->getAll());
+  $candidatos = array_values($candidatoDAO->getAll());
 
   return $response->withJson($candidatos);
 });
 
+$app->get('/empresas', function (Request $request, Response $response){
+  $empresaDAO = EmpresaDAO::getInstance();
+  $empresas = array_values($empresaDAO->getAll());
+
+  return $response->withJson($empresas);
+});
 
 /**
- * Rota para recuperar um candidato específico
+ * Rotas para recuperar um candidato ou empresa específico
  *
 **/
 $app->get('/candidatos/{idCandidato}', function (Request $request, Response $response, $args) {
@@ -47,9 +53,15 @@ $app->get('/candidatos/{idCandidato}', function (Request $request, Response $res
   $candidato = $candidatoDAO->getById($id);
   return $response->withJson($candidato);
 });
+$app->get('/empresa/{idEmpresa}', function (Request $request, Response $response, $args) {
+  $id = $args['idEmpresa'];
+  $empresaDAO = EmpresaDAO::getInstance();
+  $empresa = $empresaDAO->getById($id);
+  return $response->withJson($empresa);
+});
 
 /**
- * Rota para a persistência de um novo candidato
+ * Rota para a persistência de um novo candidato ou empresa
  *
 **/
 $app->post('/cadastro', function (Request $request, Response $response){
@@ -61,6 +73,17 @@ $app->post('/cadastro', function (Request $request, Response $response){
     return $response->withStatus(406);
   }
   return $response->withJson($novoCandidato);
+});
+
+$app->post('/cadastroEmpresa', function (Request $request, Response $response){
+  $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
+  $empresaDAO = EmpresaDAO::getInstance();
+  try{
+    $novaEmpresa = $empresaDAO->insert($data);
+  }catch(InsertionException $e){
+    return $response->withStatus(406);
+  }
+  return $response->withJson($novaEmpresa);
 });
 
 /**
@@ -79,13 +102,23 @@ $app->post('/candidato/main', function(Request $request, Response $response){
 });
 
 /**
- * Rota para o logout de um candidato
+ * Rota para o logout de um candidato ou empresa
  *
 **/
 $app->get('/candidato/logout', function(Request $request, Response $response){
   try{
     $candidatoDAO = CandidatoDAO::getInstance();
     $candidatoDAO->logout();
+    return $response->withStatus(204);
+  }catch(LogoutException $e){
+    return $response->withStatus(400);
+  }
+});
+
+$app->get('/empresa/logout', function(Request $request, Response $response){
+  try{
+    $empresaDAO = EmpresaDAO::getInstance();
+    $empresaDAO->logout();
     return $response->withStatus(204);
   }catch(LogoutException $e){
     return $response->withStatus(400);
@@ -107,7 +140,7 @@ $app->get('/candidato/session', function(Request $request, Response $response){
 });
 
 /**
- * Rota para o retorno das informações de um candidato
+ * Rota para o retorno das informações de um candidato ou empresa
  *
 **/
 $app->get('/candidato/getinfo', function(Request $request, Response $response){
@@ -116,6 +149,17 @@ $app->get('/candidato/getinfo', function(Request $request, Response $response){
     $candidatoDAO = CandidatoDAO::getInstance();
     $novoCandidato = $candidatoDAO->getById($_SESSION['candidato']['id']);
     return $response->withJson($novoCandidato)->withStatus(200);
+  }catch(GetInfoException $e){
+    return $response->withStatus(403);
+  }
+});
+
+$app->get('/empresa/getinfo', function(Request $request, Response $response){
+  try{
+    session_start();
+    $empresaDAO = EmpresaDAO::getInstance();
+    $novaEmpresa = $empresaDAO->getById($_SESSION['empresa']['id']);
+    return $response->withJson($novaEmpresa)->withStatus(200);
   }catch(GetInfoException $e){
     return $response->withStatus(403);
   }
@@ -166,7 +210,7 @@ $app->post('/candidato/uploadimg', function(Request $request, Response $response
 });
 
 /**
- * Rota para a exclusão de um candidato específico
+ * Rota para a exclusão de um candidato ou empresa específico
  *
 **/
 $app->post('/candidato/delete', function(Request $request, Response $response){
@@ -179,6 +223,22 @@ $app->post('/candidato/delete', function(Request $request, Response $response){
       return $response->withStatus(404);
     }
     $candidatoDAO->delete($candidato);
+    return $response->withStatus(204);
+  }catch(DeleteException $e){
+    return $response->withStatus(409);
+  }
+});
+
+$app->post('/empresa/delete', function(Request $request, Response $response){
+  try{
+    $data = $request->getParsedBody();
+    $empresaDAO = EmpresaDAO::getInstance();
+    try{
+      $empresa = $empresaDAO->getByLogin($data['login']);
+    }catch(GetCompanyByLoginException $e){
+      return $response->withStatus(404);
+    }
+    $empresaDAO->delete($empresa);
     return $response->withStatus(204);
   }catch(DeleteException $e){
     return $response->withStatus(409);
