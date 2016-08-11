@@ -324,4 +324,72 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
    }
  });
 
+ /**
+  * ---------------------------------------------------------------------------
+  * ------------------------- ROTAS PARA VAGAS --------------------------------
+  * ---------------------------------------------------------------------------
+  */
+
+  /**
+   * Rotas para recuperar todas as vagas
+   */
+  $app->get('/vagas', function (Request $request, Response $response){
+    $vagaDAO = VagaDAO::getInstance();
+    $vagas = array_values($vagasDAO->getAll());
+
+    return $response->withJson($vagas);
+  });
+
+  /**
+   * Rotas para recuperar uma empresa específica
+   *
+  **/
+  $app->get('/vagas/{idVaga}', function (Request $request, Response $response, $args) {
+    $id = $args['idVaga'];
+    $vagaDAO = VagaDAO::getInstance();
+    try{
+      $vaga = $vagaDAO->getById($id);
+    }catch(GetVagaByIdException $e){
+      return $response->withStatus(404);
+    }
+    return $response->withJson($vaga);
+  });
+
+  /**
+   * Rota para a persistência de uma nova vaga
+   *
+  **/
+  $app->post('/vaga/cadastro', function (Request $request, Response $response){
+    $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
+    $vagaDAO = VagaDAO::getInstance();
+    try{
+      $novoVaga = $vagaDAO->insert($data);
+    }catch(InsertionException $e){
+      return $response->withStatus(406);
+    }
+    return $response->withJson($novoVaga);
+  });
+
+  /**
+   * Rota para a exclusão de uma vaga específica
+   *
+  **/
+  $app->post('/vagas/delete', function(Request $request, Response $response){
+    $data = $request->getParsedBody();
+    try{
+      $vagaDAO = VagaDAO::getInstance();
+      try{
+        $vaga = $vagaDAO->getById($data['id']);
+      }catch(GetVagaByIdException $e){
+        return $response->withStatus(404);
+      }
+      $vagaDAO->delete($data);
+      return $response->withStatus(204);
+    }catch(DeleteException $e){
+      return $response->withStatus(409);
+    }
+  });
+
+
+
 $app->run();
