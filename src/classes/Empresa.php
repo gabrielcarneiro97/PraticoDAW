@@ -1,7 +1,4 @@
 <?php
-/**
- *
- */
 class Empresa{
 
   // para a pesquisa nos arquivos de persistência
@@ -12,7 +9,7 @@ class Empresa{
   public $senha;
 
   // para identificação da empresa
-  public $nome;
+  public $razaoSocial;
   public $CNPJ;
 
   // para localização geografica da empresa
@@ -21,17 +18,17 @@ class Empresa{
   public $pais;
   public $CEP;
   public $logradouro;
-  public $numero;
+  public $numeroEndereco;
   public $complementoLocalidade;
 
   // para o contato com a empresa
-  public $numContato;
+  public $numTelefone;
   public $email;
 
-  function __construct(array $data){
+  function __construct($data){
     $this->login = $data['login'];
     $this->senha = $data['senha'];
-    $this->nome = $data['nome'];
+    $this->razaoSocial = $data['razaoSocial'];
     $this->cidade = $data['cidade'];
     $this->estado = $data['estado'];
     $this->pais = $data['pais'];
@@ -39,12 +36,15 @@ class Empresa{
     $this->CNPJ = $data['CNPJ'];
     $this->CEP = $data['CEP'];
     $this->logradouro = $data['logradouro'];
-    $this->numero = $data['numero'];
+    $this->numeroEndereco = $data['numeroEndereco'];
     $this->complementoLocalidade = $data['complementoLocalidade'];
-    $this->numContato = $data['numContato'];
+    $this->numTelefone = $data['numTelefone'];
   }
 
   //Getters & Setters para o login
+    public function setId($idEmpresa){
+      $this->id = $idEmpresa;
+    }
     public function getId(){
         return $this->id;
     }
@@ -60,12 +60,12 @@ class Empresa{
     public function setSenha($Senha){
         $this->senha = $Senha;
     }
-  //Getters & Setters para nome
-    public function getNome(){
-        return $this->nome;
+  //Getters & Setters para razaoSocial
+    public function getrazaoSocial(){
+        return $this->razaoSocial;
     }
-    public function setNome($Pname){
-        $this->nome = $Pname;
+    public function setrazaoSocial($name){
+        $this->razaoSocial = $name;
     }
   //Getters & Setters para cidade
     public function getCidade(){
@@ -116,10 +116,7 @@ class Empresa{
       return $this->complementoLocalidade;
     }
   //Getters & Setters para número de celular
-    public function getNumContato(){
-      return $this->numContato;
+    public function getNumTelefone(){
+      return $this->numTelefone;
     }
   }
-}
-
- ?>

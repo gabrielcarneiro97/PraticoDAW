@@ -18,16 +18,32 @@ class EmpresaDAO implements DefaultDAO{
 //--****************Inicio dos métodos de login da empresa******************--//
 //--************************************************************************--//
 
-  public function validate($login,$senha){
-    $file = fopen("../private/logindata/loginEmpresa.json",'r');
+  public function validate($data){
+    var_dump($data);
+
+    $login = $data['login'];
+    $senha = $data['senha'];
+
+    var_dump($data['login']);
+    var_dump($data['senha']);
+
+    $file = fopen("../private/empresaprivate/logindata/login.json",'r');
     $jsonStr = '';
 
-    while(!feof($file)){
-        $jsonStr .= fgets($file);
-    }
+    $jsonStr .= fgets($file);
 
     $arrayLogins = json_decode($jsonStr, true);
+
     session_start();
+    if(!isset($_SESSION['empresa']))
+      for($i=0; $i < $this->getIdToCompany()-1; $i++){
+        if($arrayLogins[$i]['login'] == $login)
+          if($arrayLogins[$i]['senha'] == $senha){
+            $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
+          }
+      }
+    if(!isset($_SESSION['empresa']))
+      throw new ValidateException();
   }
 
 
@@ -60,7 +76,7 @@ class EmpresaDAO implements DefaultDAO{
   private function cadastra($id,$login,$senha){
 
     //Verificação do login do usuário.//
-    $file = fopen('../private/logindata/loginEmpresa.json', "r") or die("Unable to open file!");
+    $file = fopen('../private/empresaprivate/logindata/login.json', "r") or die("Unable to open file!");
     $json = "";
     $json = fgets($file);
     fclose($file);
@@ -75,7 +91,7 @@ class EmpresaDAO implements DefaultDAO{
                           'login' => $login,
                           'senha' => $senha);
 
-    $oldFile = fopen('../private/logindata/loginEmpresa.json', "r") or die("Unable to open file!");
+    $oldFile = fopen('../private/empresaprivate/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
     $jsonStr = fgets($oldFile);
     fclose($oldFile);
@@ -84,33 +100,33 @@ class EmpresaDAO implements DefaultDAO{
     $newJson = json_decode($jsonStr, true);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('../private/logindata/loginEmpresa.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/empresaprivate/logindata/login.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
 
   /*
   *  Função que faz a persistência dos dados do usuário
-  *  no diretório src\private\userdata com o nome userdata-{id do usuário}.json
+  *  no diretório src\private\userdata com o razaoSocial userdata-{id do usuário}.json
   */
-  private function insertData($login,$senha,$nome,$cidade,$estado,$pais,$id,$email,$CNPJ,$CEP,$logradouro,$numero,$complementoLocalidade,$numContato){
+  private function insertData($login,$senha,$razaoSocial,$cidade,$estado,$pais,$id,$email,$CNPJ,$CEP,$logradouro,$numero,$complementoLocalidade,$numTelefone){
     $jsonToPrint = array( 'id' => $id,
                           'login' => $login,
                           'senha' => $senha,
-                          'primeiroNome' => $nome,
+                          'razaoSocial' => $razaoSocial,
                           'cidade' => $cidade,
                           'estado' => $estado,
                           'pais' => $pais,
                           'email' => $email,
-                          'CPF' => $CNPJ,
+                          'CNPJ' => $CNPJ,
                           'CEP' => $CEP,
                           'logradouro' => $logradouro,
-                          'numeroResidencia' => $numero,
+                          'numeroEndereco' => $numero,
                           'complementoLocalidade' => $complementoLocalidade,
-                          'numCelular' => $numContato
+                          'numTelefone' => $numTelefone
                           );
 
-    $file = fopen('../private/companydata/companydata-'.$id.'.json', "w") or die("Unable to open file!");
+    $file = fopen('../private/empresaprivate/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
     fwrite($file, json_encode($jsonToPrint));
     fclose($file);
   }
@@ -119,6 +135,10 @@ class EmpresaDAO implements DefaultDAO{
   *  Função padrão de inserção da empresa no sistema.
   */
   public function insert($array){
+    echo "<br><br>VEJA<br><br>";
+    echo $array["login"];
+    echo "<br><br>Acima<br><br>";
+
     $novaEmpresa = new Empresa($array);
     $novaEmpresa->setId($this->getIdToCompany());
     try{
@@ -128,22 +148,22 @@ class EmpresaDAO implements DefaultDAO{
       throw new InsertionException($e->getMessage());
     }
     //Função que insere informações do usuário no arquivo específico daquele usuário.
-    $this->insertData($novoCandidato->getLogin(),
-                      $novoCandidato->getSenha(),
-                      $novoCandidato->getNome(),
-                      $novoCandidato->getCidade(),
-                      $novoCandidato->getEstado(),
-                      $novoCandidato->getPais(),
-                      $novoCandidato->getId(),
-                      $novoCandidato->getEmail(),
-                      $novoCandidato->getCNPJ(),
-                      $novoCandidato->getCEP(),
-                      $novoCandidato->getLogradouro(),
-                      $novoCandidato->getNumero(),
-                      $novoCandidato->getComplementoLocalidade(),
-                      $novoCandidato->getNumContato()
+    $this->insertData($novaEmpresa->getLogin(),
+                      $novaEmpresa->getSenha(),
+                      $novaEmpresa->getrazaoSocial(),
+                      $novaEmpresa->getCidade(),
+                      $novaEmpresa->getEstado(),
+                      $novaEmpresa->getPais(),
+                      $novaEmpresa->getId(),
+                      $novaEmpresa->getEmail(),
+                      $novaEmpresa->getCNPJ(),
+                      $novaEmpresa->getCEP(),
+                      $novaEmpresa->getLogradouro(),
+                      $novaEmpresa->getNumero(),
+                      $novaEmpresa->getComplementoLocalidade(),
+                      $novaEmpresa->getNumTelefone()
                     );
-    return $novoCandidato;
+    return $novaEmpresa;
   }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +177,7 @@ class EmpresaDAO implements DefaultDAO{
   *  Função padrão de deletar uma empresa específico do sistema.
   */
   public function delete($empresa){
-    $file = fopen("../private/logindata/loginEmpresa.json",'r');
+    $file = fopen("../private/empresaprivate/logindata/login.json",'r');
     $jsonStr = fgets($file);
     fclose($file);
     $velhoArrayLogins = json_decode($jsonStr, true);
@@ -169,25 +189,25 @@ class EmpresaDAO implements DefaultDAO{
       else
         $count++;
     }
-    $file = fopen("../private/logindata/loginEmpresa.json",'w');
+    $file = fopen("../private/empresaprivate/logindata/login.json",'w');
     fwrite($file, json_encode($novoArrayLogins));
     fclose($file);
 
     if($count==0)
       throw new DeleteException('Impossível encontrar empresa na lista de logins!');
-    if(!file_exists("../private/companydata/companydata-".$empresa->getId().".json"))
+    if(!file_exists("../private/userdata/userdata-".$empresa->getId().".json"))
       throw new DeleteException();
 
-    unlink("../private/companydata/companydata-".$empresa->getId().".json");
+    unlink("../private/empresaprivate/userdata/userdata-".$empresa->getId().".json");
   }
 
   /*
   *  Função padrão de deletar todos os usuários do sistema.
   */
   public function deleteAll() {
-    $file = fopen("../private/logindata/loginEmpresa.json", "w");
+    $file = fopen("../private/empresaprivate/logindata/login.json", "w");
     fclose($file);
-    cleanDirectory("../private/companydata");
+    cleanDirectory("../private/empresaprivate/userdata");
   }
   /*
   *   Função para limpar o diretório
@@ -221,7 +241,7 @@ class EmpresaDAO implements DefaultDAO{
     if($empresa){
       $candidato->login = $object->login;
       $candidato->senha = $object->senha;
-      $candidato->nome = $object->nome;
+      $candidato->razaoSocial = $object->razaoSocial;
       return true;
     }
     return false;
@@ -239,8 +259,8 @@ class EmpresaDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getById($id){
-    if(file_exists("../private/companydata/companydata-".$id.".json"))
-      $file = fopen("../private/companydata/companydata-".$id.'.json','r');
+    if(file_exists("../private/empresaprivate/userdata/userdata-".$id.".json"))
+      $file = fopen("../private/empresaprivate/userdata/userdata-".$id.'.json','r');
     else
       throw new GetCompanyByIdException();
 
@@ -257,7 +277,7 @@ class EmpresaDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getByLogin($login){
-    $file = fopen("../private/logindata/loginEmpresa.json",'r');
+    $file = fopen("../private/empresaprivate/logindata/login.json",'r');
     $jsonStr = fgets($file);
     fclose($file);
     $arrayLogins = json_decode($jsonStr, true);
@@ -272,7 +292,7 @@ class EmpresaDAO implements DefaultDAO{
   *  Função padrão que retorna todos os usuário do sistema.
   */
   public function getAll(){
-    $file = fopen('../private/logindata/loginEmpresa.json', "r") or die("Unable to proceed!");
+    $file = fopen('../private/empresaprivate/logindata/login.json', "r") or die("Unable to proceed!");
     while(!feof($file)){
       $candidatos .= fgets($file);
     }
@@ -282,17 +302,16 @@ class EmpresaDAO implements DefaultDAO{
   * Função que retorna a quantidade de Candidatos cadastrados
   */
   public function getIdToCompany(){
-    $file = fopen("../private/logindata/loginEmpresa.json",'r');
+    $file = fopen("../private/empresaprivate/logindata/login.json",'r');
     $jsonStr = '';
 
-    while(!feof($file)) $jsonStr = fgets($file);
+    $jsonStr = fgets($file);
     fclose($file);
 
     $arrayLogins = json_decode($jsonStr, true);
-    $count=0;
+    $count=-1;
     for($i=0; $arrayLogins[$i]!=null; $i++) $count++;
 
-    return $arrayLogins[$count-1]['id']+1;
+    return $count+1;
   }
-
 }

@@ -19,7 +19,7 @@ class CandidatoDAO implements DefaultDAO{
 //--************************************************************************--//
 
   public function validate($login,$senha){
-    $file = fopen("../private/logindata/login.json",'r');
+    $file = fopen("../private/candidatoprivate/logindata/login.json",'r');
     $jsonStr = '';
 
     while(!feof($file)){
@@ -64,12 +64,12 @@ class CandidatoDAO implements DefaultDAO{
 
   /*
   *  Função que faz a persistência dos dados de login dos usuários dentro do
-  *  diretório src/private/logindata/ no arquivo login.json.
+  *  diretório src/private/candidatoprivate/logindata/ no arquivo login.json.
   */
   private function cadastra($id,$login,$senha){
 
     //Verificação do login do usuário.//
-    $file = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
+    $file = fopen('../private/candidatoprivate/logindata/login.json', "r") or die("Unable to open file!");
     $json = "";
     $json = fgets($file);
     fclose($file);
@@ -84,7 +84,7 @@ class CandidatoDAO implements DefaultDAO{
                           'login' => $login,
                           'senha' => $senha);
 
-    $oldFile = fopen('../private/logindata/login.json', "r") or die("Unable to open file!");
+    $oldFile = fopen('../private/candidatoprivate/logindata/login.json', "r") or die("Unable to open file!");
     $jsonStr = "";
     $jsonStr = fgets($oldFile);
     fclose($oldFile);
@@ -93,7 +93,7 @@ class CandidatoDAO implements DefaultDAO{
     $newJson = json_decode($jsonStr, true);
     $newJson[] = $jsonToPrint;
 
-    $newFile = fopen('../private/logindata/login.json', "w") or die("Unable to open file!");
+    $newFile = fopen('../private/candidatoprivate/logindata/login.json', "w") or die("Unable to open file!");
     fwrite($newFile, json_encode($newJson));
     fclose($newFile);
   }
@@ -123,7 +123,7 @@ class CandidatoDAO implements DefaultDAO{
                           'numTelFixo' => $numTelFixo
                           );
 
-    $file = fopen('../private/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
+    $file = fopen('../private/candidatoprivate/userdata/userdata-'.$id.'.json', "w") or die("Unable to open file!");
     fwrite($file, json_encode($jsonToPrint));
     fclose($file);
   }
@@ -174,7 +174,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão de deletar um usuário específico do sistema.
   */
   public function delete($candidato){
-    $file = fopen("../private/logindata/login.json",'r');
+    $file = fopen("../private/candidatoprivate/logindata/login.json",'r');
     $jsonStr = fgets($file);
     fclose($file);
     $velhoArrayLogins = json_decode($jsonStr, true);
@@ -186,25 +186,25 @@ class CandidatoDAO implements DefaultDAO{
       else
         $count++;
     }
-    $file = fopen("../private/logindata/login.json",'w');
+    $file = fopen("../private/candidatoprivate/logindata/login.json",'w');
     fwrite($file, json_encode($novoArrayLogins));
     fclose($file);
 
     if($count==0)
       throw new DeleteException('Impossível encontrar usuário na lista de logins!');
-    if(!file_exists("../private/userdata/userdata-".$candidato->getId().".json"))
+    if(!file_exists("../private/candidatoprivate/userdata/userdata-".$candidato->getId().".json"))
       throw new DeleteException();
 
-    unlink("../private/userdata/userdata-".$candidato->getId().".json");
+    unlink("../private/candidatoprivate/userdata/userdata-".$candidato->getId().".json");
   }
 
   /*
   *  Função padrão de deletar todos os usuários do sistema.
   */
   public function deleteAll() {
-    $file = fopen("../private/logindata/login.json", "w");
+    $file = fopen("../private/candidatoprivate/logindata/login.json", "w");
     fclose($file);
-    cleanDirectory("../private/userdata");
+    cleanDirectory("../private/candidatoprivate/userdata");
   }
   /*
   *   Função para limpar o diretório
@@ -256,8 +256,8 @@ class CandidatoDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getById($id){
-    if(file_exists("../private/userdata/userdata-".$id.".json"))
-      $file = fopen("../private/userdata/userdata-".$id.'.json','r');
+    if(file_exists("../private/candidatoprivate/userdata/userdata-".$id.".json"))
+      $file = fopen("../private/candidatoprivate/userdata/userdata-".$id.'.json','r');
     else
       throw new GetUserByIdException();
 
@@ -274,7 +274,7 @@ class CandidatoDAO implements DefaultDAO{
   *  caçando pelo id dele no sistema.
   */
   public function getByLogin($login){
-    $file = fopen("../private/logindata/login.json",'r');
+    $file = fopen("../private/candidatoprivate/logindata/login.json",'r');
     $jsonStr = fgets($file);
     fclose($file);
     $arrayLogins = json_decode($jsonStr, true);
@@ -289,7 +289,7 @@ class CandidatoDAO implements DefaultDAO{
   *  Função padrão que retorna todos os usuário do sistema.
   */
   public function getAll(){
-    $file = fopen('../private/logindata/login.json', "r") or die("Unable to proceed!");
+    $file = fopen('../private/candidatoprivate/logindata/login.json', "r") or die("Unable to proceed!");
     while(!feof($file)){
       $candidatos .= fgets($file);
     }
@@ -299,10 +299,10 @@ class CandidatoDAO implements DefaultDAO{
   * Função que retorna a quantidade de Candidatos cadastrados
   */
   public function getIdToUser(){
-    $file = fopen("../private/logindata/login.json",'r');
+    $file = fopen("../private/candidatoprivate/logindata/login.json",'r');
     $jsonStr = '';
 
-    while(!feof($file)) $jsonStr = fgets($file);
+    $jsonStr = fgets($file);
     fclose($file);
 
     $arrayLogins = json_decode($jsonStr, true);
@@ -335,7 +335,7 @@ class CandidatoDAO implements DefaultDAO{
 //--************************************************************************--//
 
   public function fillCurriculum($array){
-    $file = fopen("../private/userdata/curriculum-".$array['candidato']->id.".json", "w");
+    $file = fopen("../private/candidatoprivate/userdata/curriculum-".$array['candidato']->id.".json", "w");
     $candidato = getById($array['candidato']->id);
     $jsonToPrint = array( 'vagas' => $array['vagas'],
                           'experiencias' => $array['experiencias'],
