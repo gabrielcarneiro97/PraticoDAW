@@ -20,6 +20,8 @@ class VagaDAO implements DefaultDAO{
   public function delete($array){
     $file = "../private/vagaprivate/".$array["empresa"]."/"."vaga-".$array["id"].".json";
     unlink($file);
+    if(file_exists($file))
+      throw new DeleteException();
   }
 
   //  função não suportada! //
@@ -46,14 +48,14 @@ class VagaDAO implements DefaultDAO{
     try{
       $novaVaga->persist($array);
     }catch(persistVagaException $e){
-      throw new Exception("Erro na tentativa de persistência da vaga.", 1);
+      throw new UpdateException();
     }
 
 
   }
 
   public function getById($id){
-    
+
   }
 
   public function getAll(){

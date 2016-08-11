@@ -356,6 +356,36 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
   });
 
   /**
+   * Rota para atualizar uma vaga em específico
+   *
+  **/
+  $app->get('/vagas/{idVaga}/update', function (Request $request, Response $response, $args) {
+    $id = $args['idVaga'];
+    $vagaDAO = VagaDAO::getInstance();
+    try{
+      $vaga = $vagaDAO->getById($id);
+      try{
+        $arrayVaga = array('id' => $vaga->id,
+                          'empresa' => $vaga->empresa,
+                          'titulo' => $vaga->titulo,
+                          'jornadaDeTrabalho' => $vaga->jornadaDeTrabalho,
+                          'requisitos' => $vaga->requisitos,
+                          'descricao' => $vaga->descricao,
+                          'qntdDisponivel' => $vaga->qntdDisponivel,
+                          'salarioInicial' => $vaga->salarioInicial);
+        $vagaDAO->update($arrayVaga);
+      }catch(UpdateException $e){
+        return $response->withStatus(404); 
+      }
+      $vagaDAO->delete($vaga->id);
+    }catch(GetVagaByIdException $e){
+      return $response->withStatus(404);
+    }
+    return $response->withJson($vaga);
+  });
+
+
+  /**
    * Rota para a persistência de uma nova vaga
    *
   **/
