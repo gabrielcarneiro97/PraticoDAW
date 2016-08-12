@@ -316,14 +316,6 @@ class CandidatoDAO implements DefaultDAO{
   * Função para validação da sessão.
   */
   public function isTheSessionSet(){
-    session_start();
-    if(!isset($_SESSION['candidato'])){
-      session_regenerate_id();
-      session_destroy();
-      throw new SessionIsUnsetException();
-    }
-    else
-      return true;
   }
 
 ////////////////////////////////////////////////////////////////////////////////

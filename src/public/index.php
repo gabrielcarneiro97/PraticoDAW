@@ -1,4 +1,4 @@
-   <?php
+<?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -91,20 +91,6 @@ $app->get('/candidato/logout', function(Request $request, Response $response){
   }
 });
 
-
-/**
- * Rota para o validação da sessão de um candidato
- *
-**/
-$app->get('/candidato/session', function(Request $request, Response $response){
-  try{
-    $candidatoDAO = CandidatoDAO::getInstance();
-    $candidatoDAO->isTheSessionSet();
-    return $response->withStatus(202);
-  }catch(SessionIsUnsetException $e){
-    return $response->withStatus(203);
-  }
-});
 
 /**
  * Rota para o retorno das informações de um candidato
@@ -247,11 +233,7 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
  **/
  $app->post('/empresa/login', function(Request $request, Response $response){
    try{
-     //$data = $request->getParsedBody(); //pegando os params vindos pelo post_method
-
-     $data = array('login' => 'carneiro',
-                    'senha' => '123456');
-
+     $data = $request->getParsedBody(); //pegando os params vindos pelo post_method
      $empresaDAO = EmpresaDAO::getInstance();
      $empresaDAO->validate($data);
      return $response->withStatus(202);
@@ -375,7 +357,7 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
                           'salarioInicial' => $vaga->salarioInicial);
         $vagaDAO->update($arrayVaga);
       }catch(UpdateException $e){
-        return $response->withStatus(404); 
+        return $response->withStatus(404);
       }
       $vagaDAO->delete($vaga->id);
     }catch(GetVagaByIdException $e){
@@ -397,7 +379,7 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
     }catch(InsertionException $e){
       return $response->withStatus(406);
     }
-    return $response->withJson($novoVaga);
+    return $response->withStatus(202);
   });
 
   /**
@@ -420,6 +402,34 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
     }
   });
 
+
+/**
+ * ---------------------------------------------------------------------------
+ * ------------------------- ROTAS AUXILIARES --------------------------------
+ * ---------------------------------------------------------------------------
+ */
+
+
+  /**
+   * Rota para o validação da sessão de usuários em geral
+   *
+  **/
+  $app->get('/session', function(Request $request, Response $response){
+    try{
+      session_start();
+      if(!isset($_SESSION['candidato'])&&!isset($_SESSION['empresa'])){
+        session_regenerate_id();
+        session_destroy();
+        throw new SessionIsUnsetException();
+      }
+    }catch(SessionIsUnsetException $e){
+      return $response->withStatus(203);
+    }
+    if(isset($_SESSION['candidato']))
+      return $response->withStatus(202);
+    else if(isset($_SESSION['empresa']))
+      return $response->withStatus(204);
+  });
 
 
 $app->run();

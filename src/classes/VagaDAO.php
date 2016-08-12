@@ -8,7 +8,7 @@ class VagaDAO implements DefaultDAO{
   //  função para o cadastro da vaga //
   public function insert($array){
     $novaVaga = new Vaga($array);
-    $novaVaga->setId($this->getIdToVagaId());
+    $novaVaga->setId($this->getIdToVaga());
     try{
       $novaVaga->persist($array);
     }catch(persistVagaException $e){
@@ -53,10 +53,7 @@ class VagaDAO implements DefaultDAO{
 
 
   }
-
-  public function getById($id){
-
-  }
+$novoVaga
 
   public function getAll(){
 
@@ -77,8 +74,10 @@ class VagaDAO implements DefaultDAO{
     else throw new PersistVagaException();
   }
   // Função privada para a distribuição dos IDs
-  private getIdToVagaId(){
-
+  private getIdToVaga($array){
+    for($i=0;$i<;$i++)
+      if(!is_dir("../private/vagaprivate/".$array["empresa"]."/".$i.".json",'r'))
+        return $i;
   }
 
   /*  Fim das funções auxiliares  */
