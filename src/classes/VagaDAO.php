@@ -63,29 +63,25 @@ class VagaDAO implements DefaultDAO{
   private function persist($novaVaga){
     $file = fopen("../private/vagaprivate/vagas.json",'r');
     $jsonVagasFile = json_decode(fgets($file));
+    $novaVaga->id = getIdToVaga($novaVaga);
     $jsonVagasFile[$novaVaga["empresa"]][]=$novaVaga->id;
 
     if(is_dir("../private/vagaprivate/".$novaVaga->empresa."/")){
       $file = fopen("../private/vagaprivate/".$novaVaga->empresa."/"."vaga-".$novaVaga->id.".json","w");
-      $json = json_encode();
+      $json = json_encode($novaVaga);
       fwrite($file,$json);
       fclose($file);
     }
     else throw new PersistVagaException();
   }
   // Função privada para a distribuição dos IDs
-  private function getIdToVaga(){
+  private function getIdToVaga($novaVaga){
     $file = fopen("../private/vagaprivate/vagas.json",'r');
-
     $json = json_decode(fgets($file));
 
-    for($i=0;$json[$array["empresa"]][$i]!=null;$i++){
+    for($i=0;$json[$novaVaga->empresa][$i]!=null;$i++);
 
-    }
-
-    for($i=0;$i<;$i++)
-      if(!is_dir("../private/vagaprivate/".$array["empresa"]."/".$i.".json",'r'))
-        return $i;
+    return $i;
   }
 
   /*  Fim das funções auxiliares  */
