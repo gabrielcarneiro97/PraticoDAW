@@ -375,7 +375,7 @@ $app->get('/candidato/curriculo', function(Request $resquest, Response $response
                           'salarioInicial' => $vaga->salarioInicial);
         $vagaDAO->update($arrayVaga);
       }catch(UpdateException $e){
-        return $response->withStatus(404); 
+        return $response->withStatus(404);
       }
       $vagaDAO->delete($vaga->id);
     }catch(GetVagaByIdException $e){

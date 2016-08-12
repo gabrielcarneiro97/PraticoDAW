@@ -335,13 +335,16 @@ class CandidatoDAO implements DefaultDAO{
 //--************************************************************************--//
 
   public function fillCurriculum($array){
-    $file = fopen("../private/candidatoprivate/userdata/curriculum-".$array['candidato']->id.".json", "w");
-    $candidato = getById($array['candidato']->id);
-    $jsonToPrint = array( 'vagas' => $array['vagas'],
-                          'experiencias' => $array['experiencias'],
-                          'cursosExtracurriculares' => $array['cursosExtracurriculares'],
-                          'escolaridade' => $array['escolaridade']);
-    fwrite($file, json_encode($jsonToPrint));
-    fclose($file);
+    if(isset($_SESSION['candidato'])){
+      $file = fopen("../private/candidatoprivate/userdata/curriculum-".$_SESSION['candidato']["id"].".json", "w");
+      $candidato = $this->getById($_SESSION['candidato']['id']);
+      $jsonToPrint = array( 'nome' => $candidato['primeiroNome']." ".$candidato['sobreNome'],
+                            'experiencias' => $array['experiencias'],
+                            'cursosExtracurriculares' => $array['cursosExtracurriculares'],
+                            'escolaridade' => $array['escolaridade']);
+      fwrite($file, json_encode($jsonToPrint));
+      fclose($file);
+    }
+    else throw new CurriculumException();
   }
 }
