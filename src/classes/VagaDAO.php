@@ -8,9 +8,8 @@ class VagaDAO implements DefaultDAO{
   //  função para o cadastro da vaga //
   public function insert($array){
     $novaVaga = new Vaga($array);
-    $novaVaga->setId($this->getIdToVaga());
     try{
-      $novaVaga->persist($array);
+      $novaVaga->persist($novaVaga);
     }catch(persistVagaException $e){
       throw new Exception("Erro na tentativa de persistência da vaga.", 1);
     }
@@ -50,10 +49,7 @@ class VagaDAO implements DefaultDAO{
     }catch(persistVagaException $e){
       throw new UpdateException();
     }
-
-
   }
-$novoVaga
 
   public function getAll(){
 
@@ -64,17 +60,29 @@ $novoVaga
   /*  Início das funções auxiliares  */
 
   // Função privada para a persistência das vagas
-  private persist($array){
-    if(is_dir("../private/vagaprivate/".$array["empresa"]."/")){
-      $file = fopen("../private/vagaprivate/".$array["empresa"]."/"."vaga-".$array["id"].".json","w");
-      $json = json_encode($array);
+  private function persist($novaVaga){
+    $file = fopen("../private/vagaprivate/vagas.json",'r');
+    $jsonVagasFile = json_decode(fgets($file));
+    $jsonVagasFile[$novaVaga["empresa"]][]=$novaVaga->id;
+
+    if(is_dir("../private/vagaprivate/".$novaVaga->empresa."/")){
+      $file = fopen("../private/vagaprivate/".$novaVaga->empresa."/"."vaga-".$novaVaga->id.".json","w");
+      $json = json_encode();
       fwrite($file,$json);
       fclose($file);
     }
     else throw new PersistVagaException();
   }
   // Função privada para a distribuição dos IDs
-  private getIdToVaga($array){
+  private function getIdToVaga(){
+    $file = fopen("../private/vagaprivate/vagas.json",'r');
+
+    $json = json_decode(fgets($file));
+
+    for($i=0;$json[$array["empresa"]][$i]!=null;$i++){
+
+    }
+
     for($i=0;$i<;$i++)
       if(!is_dir("../private/vagaprivate/".$array["empresa"]."/".$i.".json",'r'))
         return $i;
