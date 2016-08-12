@@ -19,27 +19,20 @@ class EmpresaDAO implements DefaultDAO{
 //--************************************************************************--//
 
   public function validate($data){
-    var_dump($data);
-
     $login = $data['login'];
     $senha = $data['senha'];
 
-    var_dump($data['login']);
-    var_dump($data['senha']);
-
     $file = fopen("../private/empresaprivate/logindata/login.json",'r');
     $jsonStr = '';
-
     $jsonStr .= fgets($file);
 
     $arrayLogins = json_decode($jsonStr, true);
-
     session_start();
     if(!isset($_SESSION['empresa']))
-      for($i=0; $i < $this->getIdToCompany()-1; $i++){
+      for($i=0; $i <= $this->getIdToCompany()-1; $i++){
         if($arrayLogins[$i]['login'] == $login)
           if($arrayLogins[$i]['senha'] == $senha){
-            $_SESSION['candidato']['id']=$arrayLogins[$i]['id'];
+            $_SESSION['empresa']['id']=$arrayLogins[$i]['id'];
           }
       }
     if(!isset($_SESSION['empresa']))
@@ -56,7 +49,7 @@ class EmpresaDAO implements DefaultDAO{
 //--************************************************************************--//
   public function logout(){
     session_start();
-    if(isset($_SESSION['candidato']))
+    if(isset($_SESSION['empresa']))
       session_destroy();
     else
       throw new LogoutException();
