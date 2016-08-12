@@ -55,6 +55,18 @@ class VagaDAO implements DefaultDAO{
 
   }
 
+  public function getByPendence($pendences){
+    $file = fopen("../private/vagaprivate/vagas.json", "r");
+    $json = fgets($file);
+    $array = json_decode($json, true);
+    $returnArray = [];
+    for($i = 0; $array[$i]!=null; $i++){
+      if(in_array($pendences, $array[$i]->requisitos))
+      $returnArray[] = $array[$i];
+    }
+    return json_encode($returnArray);
+  }
+
   /*  Fim das funções default  */
 
   /*  Início das funções auxiliares  */
